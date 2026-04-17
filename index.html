@@ -863,7 +863,7 @@ body{min-height:100dvh;overscroll-behavior:none}
     <div id="app-login-err" style="font-size:12px;color:#ba1a1a;margin-top:10px;min-height:16px"></div>
     <div style="margin-top:16px;text-align:center">
       <span style="font-size:12px;color:#9da9b0">¿Primera vez? </span>
-      <button onclick="showRegister()" style="font-size:12px;color:#006684;font-weight:600;background:none;border:none;cursor:pointer;padding:0">Crear cuenta</button>
+      <button onclick="showRegisterPanel()" style="font-size:12px;color:#006684;font-weight:600;background:none;border:none;cursor:pointer;padding:0">Crear cuenta</button>
     </div>
     <!-- Panel de registro -->
     <div id="register-panel" style="display:none;margin-top:18px;border-top:1px solid #f0eded;padding-top:20px">
@@ -898,7 +898,7 @@ body{min-height:100dvh;overscroll-behavior:none}
         <input id="reg-pass" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
       </div>
       
-      <button onclick="doRegister()" style="width:100%;padding:13px;background:#006684;color:#fff;border:none;border-radius:99px;font-size:14px;font-weight:600;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:-.2px">Crear mi cuenta</button>
+      <button id="reg-btn" onclick="doRegister()" style="width:100%;padding:13px;background:#006684;color:#fff;border:none;border-radius:99px;font-size:14px;font-weight:600;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:-.2px">Crear mi cuenta</button>
       <div id="reg-err" style="font-size:11px;color:#ba1a1a;margin-top:8px;text-align:center;min-height:14px"></div>
       <div style="margin-top:12px;text-align:center;font-size:11px;color:#9da9b0">Al registrarte aceptas el uso de tus datos para la gestión de tu tratamiento.</div>
     </div>
@@ -993,8 +993,8 @@ async function doRegister() {
   err.textContent = '';
 
   var fullName = (nombres + ' ' + apellidos).toUpperCase();
-  var btn = document.querySelector('#register-panel button');
-  if (btn) { btn.textContent = 'Creando cuenta...'; btn.disabled = true; }
+  var btn = document.getElementById('reg-btn');
+  if (btn) { btn.textContent = 'Creando cuenta...'; btn.disabled = true; btn.style.opacity = '0.7'; }
 
   var res = await supa.auth.signUp({
     email: email, password: pass,
@@ -1002,10 +1002,15 @@ async function doRegister() {
   });
 
   if (res.error) {
-    err.textContent = res.error.message === 'User already registered'
-      ? 'Este correo ya tiene una cuenta. Inicia sesión.'
-      : res.error.message;
-    if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; }
+    var msg = res.error.message;
+    if (msg.includes('already registered') || msg.includes('already been registered'))
+      msg = 'Este correo ya tiene una cuenta. Inicia sesión.';
+    else if (msg.includes('invalid') && msg.includes('email'))
+      msg = 'Correo electrónico no válido.';
+    else if (msg.includes('password'))
+      msg = 'La contraseña debe tener al menos 6 caracteres.';
+    err.textContent = msg;
+    if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; btn.style.opacity = '1'; }
     return;
   }
 
@@ -1018,11 +1023,12 @@ async function doRegister() {
 
   if (existing && !existing.email) {
     // Paciente ya existe (importado) pero sin email — vincular su cuenta
-    await supa.from('patients').update({
+    var updRes = await supa.from('patients').update({
       email: email,
       tel: tel || existing.tel,
-      name: existing.name // mantener el nombre oficial
+      name: existing.name
     }).eq('id', existing.id);
+    if (updRes.error) console.warn('Error vinculando perfil:', updRes.error.message);
     showToast('¡Bienvenido de vuelta, ' + existing.name.split(' ')[0] + '!');
   } else if (existing && existing.email) {
     // Ya tiene email registrado — posible duplicado
@@ -1032,7 +1038,7 @@ async function doRegister() {
     return;
   } else {
     // Paciente nuevo — crear registro
-    await supa.from('patients').insert({
+    var insRes = await supa.from('patients').insert({
       name: fullName,
       email: email,
       tel: tel,
@@ -1043,6 +1049,7 @@ async function doRegister() {
       billing_ses_per_factura: 5,
       billing_pendientes: 0
     });
+    if (insRes.error) console.warn('Error creando perfil:', insRes.error.message);
   }
 
   // Intentar login automático después del registro
@@ -1061,7 +1068,7 @@ async function doRegister() {
     updateUserDisplay();
     showToast('¡Bienvenido a Rehactiva!');
   }
-  if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; }
+  if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; btn.style.opacity = '1'; }
 }
 
 async function doLogout() {
@@ -1430,12 +1437,24 @@ async function loadMyCitas() {
 // ── PERFIL ─────────────────────────────────────────────
 async function loadProfile() {
   if (!currentUser) return;
-  var res = await supa.from('patients').select('*').eq('email', currentUser.email).single();
+  var res = await supa.from('patients').select('*').eq('email', currentUser.email).maybeSingle();
   var c = document.querySelector('#screen-perfil main');
   if (!c) return;
   var pat = res.data;
   if (!pat) {
-    c.innerHTML = '<div class="pt-8 px-4 text-center text-on-surface-variant">No se encontró tu perfil.</div>';
+    c.innerHTML = '<div class="pt-8 pb-32 px-4 max-w-2xl mx-auto">'
+      + '<div class="bg-surface-container-lowest rounded-2xl p-8 text-center border border-outline-variant/10 mt-4">'
+      + '<div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold text-primary" style="background:#e0f2fe">'
+      + (currentUser.email.charAt(0).toUpperCase())
+      + '</div>'
+      + '<div class="font-headline font-bold text-xl text-on-surface mb-2">Bienvenido</div>'
+      + '<div class="text-on-surface-variant text-sm mb-1">' + currentUser.email + '</div>'
+      + '<div class="text-on-surface-variant text-xs mb-6">Tu perfil de paciente aún no está vinculado.</div>'
+      + '<button onclick="navAgendar()" class="px-8 py-3 rounded-full text-white font-semibold text-sm mb-3 w-full" style="background:#006684">Agendar mi primera cita</button>'
+      + '</div>'
+      + '<button onclick="doLogout()" class="w-full mt-4 py-4 rounded-full border-2 border-outline-variant/40 text-on-surface-variant font-semibold text-base flex items-center justify-center gap-2">'
+      + '<span class="material-symbols-outlined">logout</span>Cerrar sesión</button>'
+      + '</div>';
     connectNav(); return;
   }
   var statusLabel = pat.status === 'active' ? 'Activo' : pat.status === 'alta' ? 'Alta médica' : 'Inactivo';
