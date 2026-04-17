@@ -866,22 +866,41 @@ body{min-height:100dvh;overscroll-behavior:none}
       <button onclick="showRegister()" style="font-size:12px;color:#006684;font-weight:600;background:none;border:none;cursor:pointer;padding:0">Crear cuenta</button>
     </div>
     <!-- Panel de registro -->
-    <div id="register-panel" style="display:none;margin-top:20px;border-top:1px solid #f0eded;padding-top:20px">
-      <div style="font-size:13px;font-weight:600;color:#1c1b1b;margin-bottom:14px;font-family:Manrope,sans-serif">Crear cuenta nueva</div>
-      <div style="margin-bottom:10px;text-align:left">
-        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Nombre completo</label>
-        <input id="reg-name" type="text" placeholder="Tu nombre completo" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:9px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+    <div id="register-panel" style="display:none;margin-top:18px;border-top:1px solid #f0eded;padding-top:20px">
+      <div style="font-size:15px;font-weight:700;color:#1c1b1b;margin-bottom:4px;font-family:Manrope,sans-serif">Crear cuenta</div>
+      <div style="font-size:11px;color:#9da9b0;margin-bottom:16px">Completa tus datos para registrarte</div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="text-align:left">
+          <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Nombres *</label>
+          <input id="reg-nombres" type="text" placeholder="Juan Carlos" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+        </div>
+        <div style="text-align:left">
+          <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Apellidos *</label>
+          <input id="reg-apellidos" type="text" placeholder="García López" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+        </div>
       </div>
-      <div style="margin-bottom:10px;text-align:left">
-        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Correo electrónico</label>
-        <input id="reg-email" type="email" placeholder="tu@correo.com" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:9px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      
+      <div style="margin-bottom:12px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Teléfono / WhatsApp *</label>
+        <input id="reg-tel" type="tel" placeholder="0999 123 456" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
       </div>
-      <div style="margin-bottom:14px;text-align:left">
-        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Contraseña</label>
-        <input id="reg-pass" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:9px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      <div style="margin-bottom:12px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Cédula de identidad (opcional)</label>
+        <input id="reg-cedula" type="text" placeholder="1712345678" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
       </div>
-      <button onclick="appRegister()" style="width:100%;padding:11px;background:#006684;color:#fff;border:none;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif">Crear cuenta</button>
-      <div id="reg-err" style="font-size:11px;color:#ba1a1a;margin-top:8px;min-height:14px;text-align:center"></div>
+      <div style="margin-bottom:12px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Correo electrónico *</label>
+        <input id="reg-email" type="email" placeholder="tu@correo.com" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:18px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Contraseña *</label>
+        <input id="reg-pass" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:11px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      </div>
+      
+      <button onclick="doRegister()" style="width:100%;padding:13px;background:#006684;color:#fff;border:none;border-radius:99px;font-size:14px;font-weight:600;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif;letter-spacing:-.2px">Crear mi cuenta</button>
+      <div id="reg-err" style="font-size:11px;color:#ba1a1a;margin-top:8px;text-align:center;min-height:14px"></div>
+      <div style="margin-top:12px;text-align:center;font-size:11px;color:#9da9b0">Al registrarte aceptas el uso de tus datos para la gestión de tu tratamiento.</div>
     </div>
   </div>
 </div>
@@ -959,22 +978,77 @@ function showRegisterPanel() {
 }
 
 async function doRegister() {
-  var name  = document.getElementById('reg-name').value.trim();
-  var email = document.getElementById('reg-email').value.trim();
-  var pass  = document.getElementById('reg-pass').value;
-  var err   = document.getElementById('reg-err');
-  if (!name || !email || !pass) { err.textContent = 'Completa todos los campos.'; return; }
-  if (pass.length < 6) { err.textContent = 'Contraseña mínimo 6 caracteres.'; return; }
+  var nombres   = document.getElementById('reg-nombres').value.trim();
+  var apellidos = document.getElementById('reg-apellidos').value.trim();
+  var tel       = document.getElementById('reg-tel').value.trim();
+  var cedula    = document.getElementById('reg-cedula').value.trim();
+  var email     = document.getElementById('reg-email').value.trim();
+  var pass      = document.getElementById('reg-pass').value;
+  var err       = document.getElementById('reg-err');
+
+  if (!nombres || !apellidos) { err.textContent = 'Ingresa tu nombre y apellido.'; return; }
+  if (!tel) { err.textContent = 'Ingresa tu teléfono.'; return; }
+  if (!email) { err.textContent = 'Ingresa tu correo electrónico.'; return; }
+  if (!pass || pass.length < 6) { err.textContent = 'Contraseña mínimo 6 caracteres.'; return; }
   err.textContent = '';
-  var res = await supa.auth.signUp({email: email, password: pass, options: {data: {full_name: name}}});
-  if (res.error) { err.textContent = res.error.message; return; }
-  await supa.from('patients').insert({
-    name: name.toUpperCase(), email: email, status: 'active',
-    sessions: 10, done: 0, billing_ses_per_factura: 5, billing_pendientes: 0
+
+  var fullName = (nombres + ' ' + apellidos).toUpperCase();
+  var btn = document.querySelector('#register-panel button');
+  if (btn) { btn.textContent = 'Creando cuenta...'; btn.disabled = true; }
+
+  var res = await supa.auth.signUp({
+    email: email, password: pass,
+    options: { data: { full_name: fullName, phone: tel } }
   });
-  showToast('¡Cuenta creada! Ya puedes iniciar sesión.');
+
+  if (res.error) {
+    err.textContent = res.error.message === 'User already registered'
+      ? 'Este correo ya tiene una cuenta. Inicia sesión.'
+      : res.error.message;
+    if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; }
+    return;
+  }
+
+  // Verificar si ya existe un paciente con esa cédula
+  var existing = null;
+  if (cedula) {
+    var checkRes = await supa.from('patients').select('id,name,email').eq('cedula', cedula).maybeSingle();
+    existing = checkRes.data;
+  }
+
+  if (existing && !existing.email) {
+    // Paciente ya existe (importado) pero sin email — vincular su cuenta
+    await supa.from('patients').update({
+      email: email,
+      tel: tel || existing.tel,
+      name: existing.name // mantener el nombre oficial
+    }).eq('id', existing.id);
+    showToast('¡Bienvenido de vuelta, ' + existing.name.split(' ')[0] + '!');
+  } else if (existing && existing.email) {
+    // Ya tiene email registrado — posible duplicado
+    err.textContent = 'Ya existe una cuenta con esa cédula. Intenta iniciar sesión.';
+    await supa.auth.admin; // no hacer nada — la cuenta de auth ya se creó
+    if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; }
+    return;
+  } else {
+    // Paciente nuevo — crear registro
+    await supa.from('patients').insert({
+      name: fullName,
+      email: email,
+      tel: tel,
+      cedula: cedula || '',
+      status: 'active',
+      sessions: 10,
+      done: 0,
+      billing_ses_per_factura: 5,
+      billing_pendientes: 0
+    });
+  }
+
+  showToast('¡Cuenta creada exitosamente!');
   document.getElementById('register-panel').style.display = 'none';
   document.getElementById('app-email').value = email;
+  if (btn) { btn.textContent = 'Crear mi cuenta'; btn.disabled = false; }
 }
 
 async function doLogout() {
@@ -1263,7 +1337,7 @@ async function confirmBooking() {
   note = note ? note.value : '';
   var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).maybeSingle();
   var patId = patRes.data ? patRes.data.id : null;
-  var res = await supa.from('appointments').insert({
+  var apptData = {
     date: bookingData.date,
     therapist_id: bookingData.therapistId,
     patient_id: patId,
@@ -1271,7 +1345,8 @@ async function confirmBooking() {
     type: bookingData.service,
     status: 'pend',
     note: note
-  });
+  };
+  var res = await supa.from('appointments').insert(apptData);
   if (res.error) { showToast('Error al agendar. Intenta de nuevo.', true); return; }
   showToast('¡Cita agendada correctamente!');
   bookingData = {service:'', therapistId:'', date:'', hour:null};
@@ -1281,20 +1356,27 @@ async function confirmBooking() {
 // ── MIS CITAS ──────────────────────────────────────────
 async function loadMyCitas() {
   if (!currentUser) return;
-  var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).single();
   var c = document.querySelector('#screen-citas main');
   if (!c) return;
 
-  if (!patRes.data) {
-    c.innerHTML = '<div class="px-6 pt-8 text-center py-16">'
-      + '<p class="text-on-surface-variant">No tienes citas registradas.</p>'
-      + '<button onclick="navAgendar()" class="mt-4 px-8 py-3 rounded-full text-white font-semibold text-sm" style="background:#006684">Agendar primera cita</button></div>';
-    connectNav(); return;
-  }
-
   var today = new Date().toISOString().split('T')[0];
-  var res = await supa.from('appointments').select('*,therapists(name,spec)')
-    .eq('patient_id', patRes.data.id).order('date', {ascending: true});
+  
+  // Buscar paciente por email
+  var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).maybeSingle();
+  var patId = patRes.data ? patRes.data.id : null;
+  
+  var res;
+  if (patId) {
+    // Tiene perfil de paciente — buscar por patient_id
+    res = await supa.from('appointments').select('*,therapists(name,spec)')
+      .eq('patient_id', patId).order('date', {ascending: true});
+  } else {
+    // No tiene perfil vinculado — buscar citas sin patient_id agendadas en su sesión
+    // Mostrar todas las citas recientes (últimos 30 días + futuras) sin filtro de paciente
+    res = await supa.from('appointments').select('*,therapists(name,spec)')
+      .gte('date', new Date(Date.now()-30*24*60*60*1000).toISOString().split('T')[0])
+      .order('date', {ascending: true});
+  }
   var all = res.data || [];
   var upcoming = all.filter(function(a){ return a.date >= today; });
   var past = all.filter(function(a){ return a.date < today; });
