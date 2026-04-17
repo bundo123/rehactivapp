@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="theme-color" content="#006684"/>
 <title>Rehactiva — Centro de Rehabilitación</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
@@ -1168,10 +1169,10 @@ async function renderStep(step) {
       var cls = sel
         ? 'flex flex-col items-center p-3 rounded-2xl border-2 border-primary bg-primary text-white'
         : 'flex flex-col items-center p-3 rounded-2xl border-2 border-outline-variant/30 bg-surface-container-lowest text-on-surface hover:border-primary/50 transition-colors';
-      dayBtns += '<button onclick="pickDate(this)" data-ds="' + ds + '" class="' + cls + '">';
-        + '<span class="text-xs font-medium opacity-75">' + dn + '</span>'
-        + '<span class="text-xl font-bold">' + d.getDate() + '</span>'
-        + '<span class="text-[10px] opacity-60">' + mo + '</span>'
+      dayBtns += '<button onclick="pickDate(this)" data-ds="' + ds + '" class="' + cls + '">'
+        + '<span style="font-size:10px;font-weight:500;opacity:.75;display:block;text-align:center">' + dn + '</span>'
+        + '<span style="font-size:20px;font-weight:700;display:block;text-align:center">' + d.getDate() + '</span>'
+        + '<span style="font-size:10px;opacity:.6;display:block;text-align:center">' + mo + '</span>'
         + '</button>';
     }
     stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">Selecciona el día</h2><div class="grid grid-cols-4 gap-3">' + dayBtns + '</div>';
@@ -1260,7 +1261,7 @@ async function confirmBooking() {
   if (!currentUser) { showToast('Debes iniciar sesión', true); return; }
   var note = document.getElementById('booking-note');
   note = note ? note.value : '';
-  var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).single();
+  var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).maybeSingle();
   var patId = patRes.data ? patRes.data.id : null;
   var res = await supa.from('appointments').insert({
     date: bookingData.date,
