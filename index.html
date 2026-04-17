@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Rehactiva — Centro de Rehabilitación</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#d7e5ea",
+                        "surface-container": "#f0eded",
+                        "primary-container": "#2ba8d4",
+                        "surface-variant": "#e5e2e1",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#3c494d",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f6f3f2",
+                        "on-primary-fixed-variant": "#004d65",
+                        "on-error": "#ffffff",
+                        "tertiary": "#536165",
+                        "outline": "#6e797f",
+                        "on-primary-fixed": "#001f2a",
+                        "surface-tint": "#006684",
+                        "on-secondary-fixed": "#2b1700",
+                        "on-surface-variant": "#3e484e",
+                        "on-tertiary-fixed": "#111d21",
+                        "secondary-fixed-dim": "#ffb961",
+                        "primary-fixed": "#bee9ff",
+                        "on-primary-container": "#00394b",
+                        "on-primary": "#ffffff",
+                        "secondary": "#865300",
+                        "surface-container-high": "#eae7e7",
+                        "outline-variant": "#bdc8cf",
+                        "on-surface": "#1c1b1b",
+                        "secondary-fixed": "#ffddb8",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary-container": "#919ea3",
+                        "inverse-primary": "#6ad3ff",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary-container": "#6b4200",
+                        "primary": "#006684",
+                        "surface": "#fcf9f8",
+                        "surface-dim": "#dcd9d9",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#313030",
+                        "on-secondary": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "primary-fixed-dim": "#6ad3ff",
+                        "on-secondary-fixed-variant": "#663e00",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#bbc9ce",
+                        "background": "#fcf9f8",
+                        "secondary-container": "#fcaa3a",
+                        "on-tertiary-container": "#293639"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Plus Jakarta Sans", "sans-serif"],
+                        "label": ["Plus Jakarta Sans", "sans-serif"]
+                    }
+                }
+            }
+        }</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+.material-symbols-outlined {font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+body{min-height:100dvh;overscroll-behavior:none}
+.screen{display:none;min-height:100dvh;flex-direction:column}
+.screen.active{display:flex}
+/* Toast */
+#app-toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:9999;pointer-events:none;transition:opacity .3s}
+.app-toast-msg{background:#006684;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;box-shadow:0 4px 24px rgba(0,102,132,.25);white-space:nowrap}
+.app-toast-msg.error{background:#ba1a1a}
+/* Steps */
+.step-panel{display:none}.step-panel.active{display:block}
+/* Smooth nav */
+.nav-item{transition:all .15s}
+</style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased">
+
+<!-- ===== PANTALLA: INICIO ===== -->
+<div id="screen-inicio" class="screen active">
+
+<!-- TopAppBar -->
+<header class="bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md docked full-width top-0 sticky z-50 no-border tonal-shift shadow-sm shadow-slate-200/50 dark:shadow-none hidden md:block">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button aria-label="Menu" class="text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity active:scale-95 duration-150 flex items-center justify-center h-10 w-10 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">Rehactiva</h1>
+</div>
+<nav aria-label="Navegación principal" class="hidden md:flex gap-8 items-center">
+<a class="font-['Manrope'] font-bold text-lg tracking-tight text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity" href="#">Inicio</a>
+<a class="font-['Manrope'] font-bold text-lg tracking-tight text-slate-500 dark:text-slate-400 hover:opacity-80 transition-opacity" href="#">Servicios</a>
+<a class="font-['Manrope'] font-bold text-lg tracking-tight text-slate-500 dark:text-slate-400 hover:opacity-80 transition-opacity" href="#">Mis citas</a>
+<a class="font-['Manrope'] font-bold text-lg tracking-tight text-slate-500 dark:text-slate-400 hover:opacity-80 transition-opacity" href="#">Perfil</a>
+</nav>
+<button aria-label="Perfil" class="flex items-center gap-2 hover:opacity-80 transition-opacity active:scale-95 duration-150">
+<img alt="Foto de perfil del paciente" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container" data-alt="Close up portrait of a smiling young woman with natural makeup, looking at the camera, well lit, soft background blur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5jNMvrWMuQZVXo-LL5bC43M_3b7gnRmPaDQ_hS0nLcwSOixOc2B7r8-BQZBB2ffUFY-8sArUKRNUZcwRXBhre0WM_Tt0jChHLVgwM45QcuP4H7DDNiozGhQusrgiIm26K7TUk4pKrMnnv-bge4bLYRtvRrAUWfqRNER_sn2kDGoXj12H44eUMuVcmJ3XxEjuUAJowD_V7xU8S9-D1IA-OIuASsEpzKcoTA-3qB6BQCjp5jGUv-R1WumDWnQw07gDqLtSGzdKJyp8"/>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 md:py-24 relative overflow-hidden">
+<!-- Decorative Ambient Background -->
+<div class="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center">
+<div class="w-[800px] h-[800px] rounded-full bg-gradient-to-tr from-primary-container/20 to-surface-bright blur-3xl opacity-50 absolute -top-1/4 -right-1/4"></div>
+<div class="w-[600px] h-[600px] rounded-full bg-gradient-to-bl from-secondary-container/10 to-transparent blur-3xl opacity-40 absolute -bottom-1/4 -left-1/4"></div>
+</div>
+<!-- Hero Section -->
+<div class="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center text-center">
+<!-- Logo Area (Descriptive interpretation) -->
+<div class="mb-8 relative">
+<div class="w-32 h-32 md:w-48 md:h-48 rounded-full bg-surface-container-lowest shadow-[0_8px_32px_rgba(0,102,132,0.06)] flex items-center justify-center relative overflow-hidden">
+<span class="material-symbols-outlined text-[64px] md:text-[96px] text-primary" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+<!-- Decorative arcs suggested by prompt -->
+<div class="absolute top-2 right-2 w-16 h-16 border-t-4 border-r-4 border-primary-container rounded-tr-full opacity-70"></div>
+<div class="absolute bottom-2 left-2 w-12 h-12 border-b-4 border-l-4 border-secondary-container rounded-bl-full opacity-70"></div>
+</div>
+</div>
+<h2 class="font-headline font-extrabold text-4xl md:text-6xl lg:text-7xl tracking-tighter text-on-surface mb-4">
+<span class="text-primary italic pr-2">REHACTIVA</span>
+</h2>
+<p class="font-headline font-semibold text-xl md:text-3xl text-on-surface-variant mb-12 tracking-tight max-w-2xl">
+                Tu recuperación, nuestra misión
+            </p>
+<!-- Action Buttons -->
+<div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mt-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-body font-semibold text-lg px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(0,102,132,0.2)] hover:shadow-[0_12px_32px_rgba(0,102,132,0.3)] hover:-translate-y-0.5 transition-all duration-300 active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">calendar_month</span>
+                    Agendar cita
+                </button>
+<button class="bg-secondary-container text-on-secondary-container font-body font-semibold text-lg px-8 py-4 rounded-full hover:bg-[#F0A030] transition-colors duration-300 active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">view_list</span>
+                    Ver servicios
+                </button>
+</div>
+</div>
+<!-- Quick Info Bento Grid (Demonstrating professional design quality as requested) -->
+<div class="relative z-10 w-full max-w-5xl mx-auto mt-24 grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] flex flex-col border border-outline-variant/15">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed mb-6">
+<span class="material-symbols-outlined">health_and_safety</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-2">Atención Especializada</h3>
+<p class="font-body text-on-surface-variant leading-relaxed opacity-90">Profesionales altamente capacitados para tu rehabilitación física y deportiva.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] flex flex-col border border-outline-variant/15">
+<div class="w-12 h-12 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed mb-6">
+<span class="material-symbols-outlined">monitor_heart</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-2">Seguimiento Continuo</h3>
+<p class="font-body text-on-surface-variant leading-relaxed opacity-90">Monitoreo constante de tu progreso para ajustar el tratamiento según necesites.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-6 shadow-[0_4px_24px_rgba(0,0,0,0.02)] flex flex-col border border-outline-variant/15">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed mb-6">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<h3 class="font-headline font-bold text-xl text-on-surface mb-2">Cerca de Ti</h3>
+<p class="font-body text-on-surface-variant leading-relaxed opacity-90">Instalaciones modernas y accesibles diseñadas para tu máxima comodidad.</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl docked full-width bottom-0 fixed rounded-t-[32px] border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3">
+<a aria-label="Inicio" class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all hover:bg-slate-100 dark:hover:bg-slate-800 active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Inicio</span>
+</a>
+<a aria-label="Servicios" class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">grid_view</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Servicios</span>
+</a>
+<a aria-label="Mis citas" class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Mis citas</span>
+</a>
+<a aria-label="Perfil" class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Perfil</span>
+</a>
+</nav>
+
+</div>
+
+<!-- ===== PANTALLA: SERVICIOS ===== -->
+<div id="screen-servicios" class="screen">
+
+<!-- TopAppBar -->
+<header class="docked full-width top-0 sticky z-50 no-border tonal-shift shadow-sm shadow-slate-200/50 dark:shadow-none bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#006684] dark:text-[#2BA8D4] cursor-pointer hover:opacity-80 transition-opacity">menu</span>
+<span class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">Rehactiva</span>
+</div>
+<div>
+<img alt="Foto de perfil del paciente" class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Portrait of a user avatar with a solid blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSXOF3P8943Hd3JgVG39qBIFdvFf1FtEOBESXfpZdYl9oUp2_Y3dS-VaE5aRxgr-bRh9yukEZiQgOKyVy66rI9ZKtmrQQOZYZIxx-8jdDkQ3C4Q2gzgn3ez6kmYfFB-PupuIIDlsoIS9yOWDEJFLNWOC9G-eOBO6LEZOR5hHS9uXqYsVGVqv99xepN3UsvxDkhxvBj0-bKysvMKZr-MXQ6wCtRO4N04AcV3KhDy2Pl2Mqxr20j6X0mt-m1mNlbgSYoIz6qJCvxMfo"/>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow px-6 pt-10 pb-32 md:pb-20 max-w-7xl mx-auto w-full">
+<!-- Hero Section -->
+<div class="mb-12 max-w-2xl">
+<h1 class="font-headline text-4xl md:text-5xl font-extrabold text-primary mb-4 tracking-tight leading-tight">
+                Nuestros Especialidades Clínicas
+            </h1>
+<p class="text-on-surface-variant text-lg leading-relaxed">
+                Terapias de alta precisión diseñadas para acelerar tu recuperación y optimizar tu movilidad, guiadas por expertos en rehabilitación.
+            </p>
+</div>
+<!-- Services Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1: Fisioterapia -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">physical_therapy</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Fisioterapia</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Evaluación y tratamiento integral para restaurar la función y el movimiento corporal tras lesiones o patologías.
+                </p>
+</div>
+<!-- Card 2: Kinesioterapia -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Kinesioterapia</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Terapia basada en el movimiento activo y pasivo para mejorar la fuerza, flexibilidad y coordinación neuromuscular.
+                </p>
+</div>
+<!-- Card 3: Terapia manual -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">pan_tool</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Terapia manual</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Técnicas especializadas de manipulación de tejidos blandos y articulaciones para aliviar el dolor y reducir tensiones.
+                </p>
+</div>
+<!-- Card 4: Electroterapia -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Electroterapia</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Uso terapéutico de corrientes eléctricas controladas para la estimulación muscular y el manejo avanzado del dolor agudo.
+                </p>
+</div>
+<!-- Card 5: Masoterapia -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Masoterapia</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Masajes clínicos profundos orientados a la descompresión tisular, mejora de la circulación y relajación miofascial.
+                </p>
+</div>
+<!-- Card 6: Rehabilitación neurológica -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">neurology</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Rehabilitación neurológica</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Programas específicos para recuperar la movilidad y autonomía en pacientes con afecciones del sistema nervioso central o periférico.
+                </p>
+</div>
+<!-- Card 7: Rehabilitación pediátrica -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">child_care</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Rehabilitación pediátrica</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Atención temprana y estimulación motriz adaptada para infantes, apoyando su desarrollo físico en un entorno seguro y lúdico.
+                </p>
+</div>
+<!-- Card 8: Rehabilitación deportiva -->
+<div class="bg-surface-container-lowest rounded-DEFAULT p-8 relative overflow-hidden group shadow-[0_8px_32px_rgba(0,0,0,0.03)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.06)] transition-all duration-300 border-t-4 border-primary-container flex flex-col h-full">
+<div class="w-14 h-14 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">sports_kabaddi</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-3">Rehabilitación deportiva</h3>
+<p class="text-on-surface-variant leading-relaxed flex-grow">
+                    Protocolos intensivos para atletas, enfocados en la curación rápida de lesiones y el retorno seguro al alto rendimiento.
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="docked full-width bottom-0 fixed rounded-t-[32px] border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 md:hidden">
+<!-- Inicio -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded-[24px]" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Inicio</span>
+</a>
+<!-- Servicios (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all scale-95 duration-150" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Servicios</span>
+</a>
+<!-- Mis citas -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded-[24px]" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Mis citas</span>
+</a>
+<!-- Perfil -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors rounded-[24px]" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Perfil</span>
+</a>
+</nav>
+
+</div>
+
+<!-- ===== PANTALLA: AGENDAR CITA ===== -->
+<div id="screen-agendar" class="screen">
+
+<!-- TopAppBar -->
+<header class="bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md text-[#006684] dark:text-[#2BA8D4] font-['Manrope'] font-bold text-lg tracking-tight docked full-width top-0 sticky z-50 shadow-sm shadow-slate-200/50 dark:shadow-none flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center hover:opacity-80 transition-opacity active:scale-95 duration-150 cursor-pointer">
+<span class="material-symbols-outlined text-slate-500 dark:text-slate-400 mr-4">arrow_back</span>
+</div>
+<div class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">
+            Rehactiva
+        </div>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest cursor-pointer hover:opacity-80 transition-opacity active:scale-95 duration-150">
+<img alt="Foto de perfil del paciente" class="w-full h-full object-cover" data-alt="close up portrait of a young woman with a soft smile in natural lighting, neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsQ5lLZhqboXyiM1-rcSBZ9nX8PX4mtEtm3ECJBEmmfS7K5bEd49qI7p8LuQRPBiunqu1wCT344BBThrQ8MMKFug7OgzKuxnls48BQ6fOnEoR11DzJXq6uFv0Ar9s31GeoagzMD4A-OFR1SoYXUp4bkvUWBQFWi-ajvtthhg5Bc_xTUCicj0dV3VwsNmatcQggSuPKTw5oDPcf8GFloCh9vYtQNqWrXYIfUJLMktIbLbP769dbrGX7RNMvRvyVwcp_GBu7a0hk5U8"/>
+</div>
+</header>
+<main class="max-w-2xl mx-auto px-4 sm:px-6 pt-6 pb-12">
+<div class="mb-10 text-center">
+<h1 class="font-headline font-bold text-3xl md:text-4xl tracking-tight text-on-surface mb-2">Nueva Cita</h1>
+<p class="text-on-surface-variant text-base md:text-lg">Diseña tu sesión de recuperación.</p>
+</div>
+<!-- Progress Indicator -->
+<div class="mb-12 relative px-2">
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-surface-container-highest -z-10 -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-0 w-3/5 h-[2px] bg-primary -z-10 -translate-y-1/2 transition-all duration-300"></div>
+<div class="flex justify-between items-center w-full">
+<!-- Step 1: Done -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center mb-2 shadow-[0_4px_24px_rgba(0,102,132,0.15)]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Step 2: Done -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center mb-2 shadow-[0_4px_24px_rgba(0,102,132,0.15)]">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Step 3: Active -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center mb-2 shadow-[0_4px_24px_rgba(0,102,132,0.25)] ring-4 ring-primary/20">
+<span class="font-bold text-sm">3</span>
+</div>
+</div>
+<!-- Step 4: Pending -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center mb-2">
+<span class="font-medium text-sm">4</span>
+</div>
+</div>
+<!-- Step 5: Pending -->
+<div class="flex flex-col items-center">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center mb-2">
+<span class="font-medium text-sm">5</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between w-full mt-2 text-[11px] font-medium text-on-surface-variant">
+<span class="text-primary w-12 text-center">Servicio</span>
+<span class="text-primary w-12 text-center">Terapeuta</span>
+<span class="text-primary font-bold w-12 text-center">Fecha</span>
+<span class="w-12 text-center">Hora</span>
+<span class="w-12 text-center">Confirmar</span>
+</div>
+</div>
+<!-- Content Canvas -->
+<div class="bg-surface-container-low rounded-[2rem] p-6 md:p-8 relative z-10">
+<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">Selecciona el día</h2>
+<!-- Calendar Widget (Glassmorphism inspired) -->
+<div class="bg-surface-container-lowest rounded-[16px] p-5 shadow-[0_8px_32px_rgba(0,0,0,0.02)] mb-8">
+<!-- Month Navigation -->
+<div class="flex justify-between items-center mb-6">
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<span class="font-headline font-bold text-lg text-on-surface">Octubre 2023</span>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Days of Week -->
+<div class="grid grid-cols-7 gap-2 mb-4 text-center">
+<div class="text-xs font-semibold text-outline">Lu</div>
+<div class="text-xs font-semibold text-outline">Ma</div>
+<div class="text-xs font-semibold text-outline">Mi</div>
+<div class="text-xs font-semibold text-outline">Ju</div>
+<div class="text-xs font-semibold text-outline">Vi</div>
+<div class="text-xs font-semibold text-outline">Sa</div>
+<div class="text-xs font-semibold text-outline">Do</div>
+</div>
+<!-- Dates Grid -->
+<div class="grid grid-cols-7 gap-y-4 gap-x-2 text-center">
+<!-- Empty slots for previous month -->
+<div class="text-surface-variant p-2">25</div>
+<div class="text-surface-variant p-2">26</div>
+<div class="text-surface-variant p-2">27</div>
+<div class="text-surface-variant p-2">28</div>
+<div class="text-surface-variant p-2">29</div>
+<div class="text-surface-variant p-2">30</div>
+<!-- Current month days -->
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">1</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">2</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">3</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">4</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">5</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">6</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">7</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">8</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">9</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">10</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">11</button>
+<button class="p-2 rounded-full bg-primary-container text-on-primary-container font-bold shadow-[0_4px_12px_rgba(43,168,212,0.3)] transition-all transform scale-110">12</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">13</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">14</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface text-outline cursor-not-allowed">15</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">16</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">17</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">18</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface text-outline cursor-not-allowed">19</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">20</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">21</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">22</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">23</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">24</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">25</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface text-outline cursor-not-allowed">26</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">27</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">28</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">29</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">30</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors font-medium text-on-surface">31</button>
+</div>
+</div>
+<div class="flex justify-end mt-8">
+<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-body font-semibold py-4 px-8 rounded-full shadow-[0_8px_24px_rgba(0,102,132,0.2)] hover:shadow-[0_12px_32px_rgba(0,102,132,0.3)] transition-all duration-300 active:scale-95 flex items-center gap-2">
+                    Siguiente
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Suppressed intentionally as this is a transactional flow, but included per prompt instructions for standard components) -->
+<!-- Applying relevance check logic: This is a linear transactional flow ("Book appointment screen... Multi-step flow"), thus the BottomNavBar SHOULD be suppressed according to "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: Linear/Transactional". However, the prompt explicitly said "Use standard TopAppBar and BottomNavBar." Applying Conflict Resolution Protocol, I will include it but it conceptually conflicts with the Semantic Shell Mandate. I will render it as requested. -->
+<nav class="bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl font-['Plus_Jakarta_Sans'] font-medium text-[11px] docked full-width bottom-0 fixed rounded-t-[32px] border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 md:hidden">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-[24px]" href="#">
+<span class="material-symbols-outlined mb-1">home</span>
+<span>Inicio</span>
+</a>
+<!-- Active Tab semantic mapping: User is booking a service. Closest match is 'Servicios' or 'Mis citas'. 'Mis citas' is more appropriate for managing existing, 'Servicios' might be where they started. Let's select 'Mis citas' as they are actively interacting with their appointments. Wait, 'Servicios' makes more sense as they are selecting a service to book. I will highlight 'Servicios'. -->
+<a class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all hover:bg-slate-100 dark:hover:bg-slate-800 scale-90 duration-200" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span>Servicios</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-[24px]" href="#">
+<span class="material-symbols-outlined mb-1">calendar_today</span>
+<span>Mis citas</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all rounded-[24px]" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span>Perfil</span>
+</a>
+</nav>
+
+</div>
+
+<!-- ===== PANTALLA: MIS CITAS ===== -->
+<div id="screen-citas" class="screen">
+
+<!-- TopAppBar -->
+<header class="bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm shadow-slate-200/50 dark:shadow-none docked full-width top-0 sticky z-50 transition-opacity">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<button aria-label="Menu" class="text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity active:scale-95 duration-150">
+<span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">Rehactiva</h1>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center">
+<img alt="Foto de perfil del paciente" class="w-full h-full object-cover" data-alt="Portrait of a young smiling woman with natural lighting against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHJirVGv8qt080V3hi2an3wawRJjKn_0PHVyLMWMUIlKnkTurtP3Qwd21yOZisFFikEr_p6LV8XWi4Qad1FtTX60wlWt1azfQkIWgIZLNbgPFWEcJVMwH_6SGvCw69QBp_DNGnmx2ouyz3hv4S9nj5R3OAKhqr1z5TtUF0J2LzLCUtJFBwSK16yZFa43kLeno79xUuMmcDurVfdZKCEKYzLYfloLkkzBRhaLVpNbnuim8GWGu8Clp1trdgu8W6h9cu-HqVEFvFVIE"/>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow px-4 md:px-8 max-w-3xl mx-auto w-full pt-8 pb-12">
+<!-- Header Section -->
+<div class="mb-10">
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-2">Mis citas</h2>
+<p class="text-on-surface-variant font-medium text-lg">Gestiona tus sesiones de recuperación.</p>
+</div>
+<!-- Próximas citas -->
+<section class="mb-14">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline text-2xl font-bold text-on-surface">Próximas citas</h3>
+</div>
+<div class="flex flex-col gap-6">
+<!-- Card 1: Confirmada -->
+<article class="bg-surface-container-lowest rounded-[16px] p-6 ambient-shadow relative overflow-hidden group">
+<!-- Subtle decorative gradient element -->
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h4 class="font-headline text-xl font-bold text-on-surface mb-1">Fisioterapia Deportiva</h4>
+<p class="text-on-surface-variant font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+                                    Clínica Central
+                                </p>
+</div>
+<!-- Badge: Confirmada (Using primary-fixed for brand positive state) -->
+<span class="bg-primary-fixed text-on-primary-fixed-variant text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full whitespace-nowrap">
+                                Confirmada
+                            </span>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 sm:gap-8 mb-8 bg-surface-container-low p-4 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-medium uppercase tracking-wide">Fecha</p>
+<p class="font-bold text-on-surface">Jue, 24 Oct</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-medium uppercase tracking-wide">Hora</p>
+<p class="font-bold text-on-surface">10:00 AM</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex items-center gap-3">
+<img alt="Dr. Alejandro Gómez" class="w-12 h-12 rounded-full object-cover border-2 border-surface" data-alt="Professional headshot of a male physical therapist in a clean clinic setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBC7z_37CQcu0WJVYkdnwi5LSTaNAY9YM8HZMm_c_w0_CmYb-ptN7jzMz2p_SzNqPRphpnHI9SvuO36CX0W1Lz2q3ykuPatE1tFQBy7cE3wcBE17flsTOJKwBGtlWBvGPA4_iev525cBee-S3pliXeoc7Sf1ugpp8YcUY3_w7fNSo-pRcxxAgnsLTOC3xdKP63wZqCJEX9-7hdz1QJIKuBFUqMLeM8IsM_61R5BIsn1fqfpGQFIaiOL39z2L9eOFxQM0r3xP78HQs"/>
+<div>
+<p class="font-bold text-on-surface text-sm">Dr. Alejandro Gómez</p>
+<p class="text-xs text-on-surface-variant">Especialista en Rehabilitación</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 mt-8 pt-6 border-t border-outline-variant/15">
+<button class="flex-1 bg-surface-container-highest hover:bg-surface-variant text-on-surface font-semibold py-3 px-4 rounded-full transition-colors text-sm">
+                                Cancelar
+                            </button>
+<button class="flex-1 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold py-3 px-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow text-sm">
+                                Reagendar
+                            </button>
+</div>
+</div>
+</article>
+<!-- Card 2: Pendiente -->
+<article class="bg-surface-container-lowest rounded-[16px] p-6 ambient-shadow relative overflow-hidden group">
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-secondary/5 rounded-full blur-2xl group-hover:bg-secondary/10 transition-colors"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h4 class="font-headline text-xl font-bold text-on-surface mb-1">Evaluación Inicial</h4>
+<p class="text-on-surface-variant font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="videocam">videocam</span>
+                                    Consulta Virtual
+                                </p>
+</div>
+<!-- Badge: Pendiente -->
+<span class="bg-secondary-container text-on-secondary-container text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full whitespace-nowrap">
+                                Pendiente
+                            </span>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 sm:gap-8 mb-8 bg-surface-container-low p-4 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-medium uppercase tracking-wide">Fecha</p>
+<p class="font-bold text-on-surface">Lun, 28 Oct</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-medium uppercase tracking-wide">Hora</p>
+<p class="font-bold text-on-surface">16:30 PM</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between mt-4">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-2xl" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-bold text-on-surface text-sm">Terapeuta por asignar</p>
+<p class="text-xs text-on-surface-variant">Equipo Rehactiva</p>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 mt-8 pt-6 border-t border-outline-variant/15">
+<button class="flex-1 bg-surface-container-highest hover:bg-surface-variant text-on-surface font-semibold py-3 px-4 rounded-full transition-colors text-sm">
+                                Cancelar
+                            </button>
+<button class="flex-1 bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold py-3 px-4 rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow text-sm">
+                                Reagendar
+                            </button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- Citas pasadas -->
+<section>
+<h3 class="font-headline text-2xl font-bold text-on-surface mb-6">Citas pasadas</h3>
+<div class="flex flex-col gap-4 opacity-80">
+<!-- Card 3: Cancelada -->
+<article class="bg-surface-container-lowest rounded-[16px] p-5 shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="event_busy">event_busy</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-base">Terapia Manual</h4>
+<p class="text-sm text-on-surface-variant">15 Oct • 09:00 AM</p>
+</div>
+</div>
+<span class="bg-error-container text-on-error-container text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full">
+                            Cancelada
+                        </span>
+</div>
+</article>
+<!-- Card 4: Completada (Implicit past state) -->
+<article class="bg-surface-container-lowest rounded-[16px] p-5 shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface text-base">Fisioterapia Deportiva</h4>
+<p class="text-sm text-on-surface-variant">10 Oct • 11:00 AM</p>
+</div>
+</div>
+<button class="text-primary font-bold text-sm hover:opacity-80 transition-opacity">
+                            Ver detalles
+                        </button>
+</div>
+</article>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 rounded-t-[32px]">
+<!-- Inicio -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl mb-1 group-hover:text-[#006684]" data-icon="home">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Inicio</span>
+</a>
+<!-- Servicios -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl mb-1 group-hover:text-[#006684]" data-icon="grid_view">grid_view</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Servicios</span>
+</a>
+<!-- Mis citas (Active) -->
+<a class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="calendar_today" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Mis citas</span>
+</a>
+<!-- Perfil -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200 group" href="#">
+<span class="material-symbols-outlined text-2xl mb-1 group-hover:text-[#006684]" data-icon="person">person</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Perfil</span>
+</a>
+</nav>
+
+</div>
+
+<!-- ===== PANTALLA: PERFIL ===== -->
+<div id="screen-perfil" class="screen">
+
+<!-- TopAppBar -->
+<header class="docked full-width top-0 sticky z-50 flex justify-between items-center w-full px-6 py-4 bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm shadow-slate-200/50 dark:shadow-none">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#006684] dark:text-[#2BA8D4]">menu</span>
+</button>
+<span class="font-['Manrope'] font-bold text-lg tracking-tight text-[#006684] dark:text-[#2BA8D4]">Rehactiva</span>
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
+<img alt="Foto de perfil del paciente" class="w-full h-full object-cover" data-alt="close up portrait of a calm smiling young man in a well lit modern studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJJAlaZPw0BLfPSKLLBXbANtqW37qRH-QpB5IHwmctblKsW-RAzz9J5VL2yJluCQJTRxixP1pLx-VL6WB2B4rEtRQKS1gF2wBekli0VtKh--1ZyqJv0dQTNj8KPC_g4p4cr-k4nYnB4E4Uh0h5Z5O7ZMBeFoj8CklS4g01em8bE7TUUabGvk5PVQBdOcLw0U0PIE0dLkHtYt_e1z-ibbQZdcfN6gXJlGINuFAiS-mNnknjgDaHSiWw5ti8C6B16rer1ZJAszm5oh8"/>
+</button>
+</header>
+<!-- Main Canvas -->
+<main class="pt-8 pb-32 px-4 md:px-8 max-w-2xl mx-auto space-y-10">
+<!-- Header Profile Layering -->
+<section class="relative">
+<div class="bg-surface-container-lowest rounded-2xl p-6 md:p-8 flex flex-col items-center text-center gap-4 relative overflow-hidden z-10" style="box-shadow: 0 8px 40px rgba(0,0,0,0.02);">
+<!-- Abstract Background Accent -->
+<div class="absolute -top-16 -right-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative group">
+<div class="w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-surface shadow-sm shrink-0">
+<img alt="Foto de perfil" class="w-full h-full object-cover" data-alt="close up portrait of a calm smiling young man in a well lit modern studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD581ExGIsP6r8xMS_C-LSHuQJCIDVMHOgEv4r0uNxU7bT4xuONdjYAoJYU3u7FvtwncBVlGimrbH2VB6A9g6ymSVEDUF5W1AoKWC0w3FFMZ1rjGeE3Xusgp6Bi0LpeDI2s6gaXlGGOyibzA8tNPSDJr6mHRMkYzJ2ueJfAgfVZU8bHyDwZNlwl6we4nQ7PdCLNnjW471HPvAgqvCrFBjpKIS_3toUISTHYDe-u48ve5z2ee4zrlmRih4jA1wSSnHAo_BvKIW6wRrs"/>
+</div>
+<button class="absolute bottom-0 right-0 w-10 h-10 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg hover:bg-primary-container hover:text-on-primary-container transition-colors focus:outline-none focus:ring-4 focus:ring-primary/20">
+<span class="material-symbols-outlined text-[20px]">photo_camera</span>
+</button>
+</div>
+<div class="space-y-1 mt-2 relative z-10">
+<h1 class="font-headline font-extrabold text-3xl text-on-surface tracking-tight">Carlos Mendoza</h1>
+<p class="font-body text-on-surface-variant font-medium text-lg">CI: 4.567.890-1</p>
+</div>
+<div class="mt-2 inline-flex items-center gap-2 bg-secondary-fixed/50 px-4 py-2 rounded-full">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">shield_person</span>
+<span class="font-body text-sm font-semibold text-on-secondary-container">Paciente Activo</span>
+</div>
+</div>
+</section>
+<!-- Editable Information Bento -->
+<section class="space-y-6">
+<div class="flex items-center justify-between px-2">
+<h2 class="font-headline font-bold text-2xl text-on-surface tracking-tight">Datos de Contacto</h2>
+<button class="text-primary font-semibold text-sm hover:underline tracking-wide">Editar Todo</button>
+</div>
+<div class="bg-surface-container-low rounded-[24px] p-2 space-y-2">
+<!-- Field Container -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 md:p-5 flex flex-col group transition-all duration-300 focus-within:bg-white focus-within:shadow-[0_4px_24px_rgba(0,102,132,0.06)] relative">
+<label class="font-headline text-[11px] font-bold text-outline tracking-wider uppercase mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">call</span>
+                        Teléfono Móvil
+                    </label>
+<div class="flex items-center">
+<input class="bg-transparent border-none p-0 font-body font-medium text-on-surface text-lg md:text-xl focus:ring-0 w-full placeholder:text-outline-variant outline-none" placeholder="Ingresa tu número" type="tel" value="+598 99 123 456"/>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-focus-within:opacity-100 transition-opacity">edit</span>
+</div>
+</div>
+<!-- Field Container -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 md:p-5 flex flex-col group transition-all duration-300 focus-within:bg-white focus-within:shadow-[0_4px_24px_rgba(0,102,132,0.06)] relative">
+<label class="font-headline text-[11px] font-bold text-outline tracking-wider uppercase mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">mail</span>
+                        Correo Electrónico
+                    </label>
+<div class="flex items-center">
+<input class="bg-transparent border-none p-0 font-body font-medium text-on-surface text-lg md:text-xl focus:ring-0 w-full placeholder:text-outline-variant outline-none" placeholder="Ingresa tu correo" type="email" value="carlos.mendoza@email.com"/>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-focus-within:opacity-100 transition-opacity">edit</span>
+</div>
+</div>
+<!-- Field Container -->
+<div class="bg-surface-container-lowest rounded-2xl p-4 md:p-5 flex flex-col group transition-all duration-300 focus-within:bg-white focus-within:shadow-[0_4px_24px_rgba(0,102,132,0.06)] relative">
+<label class="font-headline text-[11px] font-bold text-outline tracking-wider uppercase mb-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                        Dirección (Opcional)
+                    </label>
+<div class="flex items-center">
+<input class="bg-transparent border-none p-0 font-body font-medium text-on-surface text-lg md:text-xl focus:ring-0 w-full placeholder:text-outline-variant outline-none" placeholder="Añadir dirección principal" type="text"/>
+<span class="material-symbols-outlined text-outline-variant opacity-0 group-focus-within:opacity-100 transition-opacity">edit</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Preferences Switcher -->
+<section class="space-y-6">
+<h2 class="font-headline font-bold text-2xl text-on-surface px-2 tracking-tight">Preferencias</h2>
+<div class="bg-surface-container-lowest rounded-2xl p-5 md:p-6 flex justify-between items-center" style="box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+<div class="pr-6">
+<h3 class="font-headline font-bold text-lg text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary">notifications_active</span>
+                        Recordatorios de citas
+                    </h3>
+<p class="font-body text-on-surface-variant text-sm mt-2 leading-relaxed">Recibe alertas proactivas antes de tus sesiones de terapia.</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer shrink-0">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-14 h-8 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</section>
+<!-- Logout Action -->
+<section class="pt-8 flex justify-center">
+<button class="group font-headline font-bold text-error bg-transparent hover:bg-error/5 px-8 py-4 rounded-full transition-all duration-200 flex items-center gap-3">
+<span class="material-symbols-outlined group-hover:-translate-x-1 transition-transform">logout</span>
+                Cerrar sesión
+            </button>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] rounded-t-[32px]">
+<!-- Inicio -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:opacity-80 transition-opacity rounded-xl" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">home</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Inicio</span>
+</a>
+<!-- Servicios -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:opacity-80 transition-opacity rounded-xl" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">grid_view</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Servicios</span>
+</a>
+<!-- Mis citas -->
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:opacity-80 transition-opacity rounded-xl" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]">calendar_today</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Mis citas</span>
+</a>
+<!-- Perfil (Active State) -->
+<a class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all scale-90 duration-200 pointer-events-none" href="#">
+<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Perfil</span>
+</a>
+</nav>
+
+</div>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div id="login-overlay" style="position:fixed;inset:0;background:#fcf9f8;z-index:99999;display:flex;align-items:center;justify-content:center">
+  <div style="width:340px;padding:36px;background:#fff;border-radius:24px;box-shadow:0 8px 48px rgba(0,102,132,.12);text-align:center">
+    <div style="width:72px;height:72px;border-radius:50%;background:#f0f9ff;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+      <span class="material-symbols-outlined" style="font-size:40px;color:#006684;font-variation-settings:'FILL' 1">directions_run</span>
+    </div>
+    <div style="font-family:Manrope,sans-serif;font-size:22px;font-weight:800;color:#006684;margin-bottom:4px;font-style:italic">REHACTIVA</div>
+    <div style="font-size:12px;color:#6e797f;margin-bottom:28px">Centro de rehabilitación y fisioterapia</div>
+    <div style="margin-bottom:14px;text-align:left">
+      <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Correo electrónico</label>
+      <input id="app-email" type="email" placeholder="tu@correo.com" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:10px 14px;font-size:14px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+    </div>
+    <div style="margin-bottom:20px;text-align:left">
+      <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Contraseña</label>
+      <input id="app-pass" type="password" placeholder="••••••••" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:10px 14px;font-size:14px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button onclick="doLogin()" id="app-login-btn" style="width:100%;padding:13px;background:linear-gradient(135deg,#006684,#2ba8d4);color:#fff;border:none;border-radius:99px;font-size:14px;font-weight:600;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif;box-shadow:0 8px 24px rgba(0,102,132,.2)">Ingresar</button>
+    <div id="app-login-err" style="font-size:12px;color:#ba1a1a;margin-top:10px;min-height:16px"></div>
+    <div style="margin-top:16px;text-align:center">
+      <span style="font-size:12px;color:#9da9b0">¿Primera vez? </span>
+      <button onclick="showRegister()" style="font-size:12px;color:#006684;font-weight:600;background:none;border:none;cursor:pointer;padding:0">Crear cuenta</button>
+    </div>
+    <!-- Panel de registro -->
+    <div id="register-panel" style="display:none;margin-top:20px;border-top:1px solid #f0eded;padding-top:20px">
+      <div style="font-size:13px;font-weight:600;color:#1c1b1b;margin-bottom:14px;font-family:Manrope,sans-serif">Crear cuenta nueva</div>
+      <div style="margin-bottom:10px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Nombre completo</label>
+        <input id="reg-name" type="text" placeholder="Tu nombre completo" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:9px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:10px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Correo electrónico</label>
+        <input id="reg-email" type="email" placeholder="tu@correo.com" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:9px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:14px;text-align:left">
+        <label style="font-size:10px;color:#6e797f;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px">Contraseña</label>
+        <input id="reg-pass" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;background:#f6f3f2;border:none;border-radius:10px;padding:9px 14px;font-size:13px;color:#1c1b1b;outline:none;font-family:Plus Jakarta Sans,sans-serif;box-sizing:border-box">
+      </div>
+      <button onclick="appRegister()" style="width:100%;padding:11px;background:#006684;color:#fff;border:none;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;font-family:Plus Jakarta Sans,sans-serif">Crear cuenta</button>
+      <div id="reg-err" style="font-size:11px;color:#ba1a1a;margin-top:8px;min-height:14px;text-align:center"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="app-toast" style="opacity:0"></div>
+
+<script>
+
+
+const SUPA_URL = 'https://cgilpnjgrnxqmrkhaxkx.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNnaWxwbmpncm54cW1ya2hheGt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNjUzNDcsImV4cCI6MjA5MDg0MTM0N30.xuVP5uq5DxOoEX36HbdSASDkIwKs0dTd7xoQalc-CqI';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+let currentUser = null;
+let therapists = [];
+let bookingData = {service:'', therapistId:'', therapistName:'', date:'', hour:null};
+let currentStep = 1;
+
+const SERVICES = [
+  'Fisioterapia','Kinesioterapia','Terapia manual',
+  'Electroterapia','Masoterapia','Rehabilitación neurológica',
+  'Rehabilitación pediátrica','Rehabilitación deportiva'
+];
+const MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
+  'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const DAYS = ['Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+// ── TOAST ──────────────────────────────────────────────
+function showToast(msg, isErr) {
+  var t = document.getElementById('app-toast');
+  var cls = isErr ? 'toast-err' : 'toast-ok';
+  t.innerHTML = '<div class="' + cls + '">' + msg + '</div>';
+  t.style.opacity = '1';
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function(){ t.style.opacity = '0'; }, 3000);
+}
+
+// ── AUTH ───────────────────────────────────────────────
+async function checkAuth() {
+  var res = await supa.auth.getSession();
+  if (res.data && res.data.session) {
+    currentUser = res.data.session.user;
+    document.getElementById('login-overlay').style.display = 'none';
+    await loadTherapists();
+    connectNav();
+    updateUserDisplay();
+  }
+}
+
+async function doLogin() {
+  var email = document.getElementById('app-email').value.trim();
+  var pass  = document.getElementById('app-pass').value;
+  var btn   = document.getElementById('app-login-btn');
+  var err   = document.getElementById('app-login-err');
+  if (!email || !pass) { err.textContent = 'Completa todos los campos.'; return; }
+  btn.textContent = 'Ingresando...'; btn.disabled = true; err.textContent = '';
+  var res = await supa.auth.signInWithPassword({email: email, password: pass});
+  if (res.error) {
+    err.textContent = 'Correo o contraseña incorrectos.';
+    btn.disabled = false; btn.textContent = 'Ingresar';
+  } else {
+    currentUser = res.data.session.user;
+    document.getElementById('login-overlay').style.display = 'none';
+    await loadTherapists();
+    connectNav();
+    updateUserDisplay();
+    showToast('¡Bienvenido a Rehactiva!');
+  }
+}
+
+function showRegisterPanel() {
+  var p = document.getElementById('register-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+}
+
+async function doRegister() {
+  var name  = document.getElementById('reg-name').value.trim();
+  var email = document.getElementById('reg-email').value.trim();
+  var pass  = document.getElementById('reg-pass').value;
+  var err   = document.getElementById('reg-err');
+  if (!name || !email || !pass) { err.textContent = 'Completa todos los campos.'; return; }
+  if (pass.length < 6) { err.textContent = 'Contraseña mínimo 6 caracteres.'; return; }
+  err.textContent = '';
+  var res = await supa.auth.signUp({email: email, password: pass, options: {data: {full_name: name}}});
+  if (res.error) { err.textContent = res.error.message; return; }
+  await supa.from('patients').insert({
+    name: name.toUpperCase(), email: email, status: 'active',
+    sessions: 10, done: 0, billing_ses_per_factura: 5, billing_pendientes: 0
+  });
+  showToast('¡Cuenta creada! Ya puedes iniciar sesión.');
+  document.getElementById('register-panel').style.display = 'none';
+  document.getElementById('app-email').value = email;
+}
+
+async function doLogout() {
+  await supa.auth.signOut();
+  location.reload();
+}
+
+// ── DATOS ──────────────────────────────────────────────
+async function loadTherapists() {
+  var res = await supa.from('therapists').select('*').order('name');
+  therapists = res.data || [];
+}
+
+function updateUserDisplay() {
+  // Actualizar avatares con inicial del usuario
+  var initials = currentUser.email.charAt(0).toUpperCase();
+  document.querySelectorAll('.user-avatar').forEach(function(el) {
+    el.textContent = initials;
+  });
+}
+
+// ── NAVEGACIÓN ─────────────────────────────────────────
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(function(s) {
+    s.classList.remove('active');
+  });
+  var el = document.getElementById('screen-' + screen);
+  if (el) { el.classList.add('active'); window.scrollTo(0,0); }
+  if (screen === 'citas')   loadMyCitas();
+  if (screen === 'agendar') initBooking();
+  if (screen === 'perfil')  loadProfile();
+  highlightNav(screen);
+}
+
+function highlightNav(active) {
+  document.querySelectorAll('[data-nav]').forEach(function(el) {
+    var isActive = el.getAttribute('data-nav') === active;
+    el.style.color = isActive ? '#006684' : '#9da9b0';
+  });
+}
+
+function connectNav() {
+  document.querySelectorAll('nav a, nav button').forEach(function(el) {
+    var txt = (el.textContent || '').trim();
+    var lbl = (el.getAttribute('aria-label') || '').toLowerCase();
+    if (txt === 'Inicio' || lbl === 'inicio')
+      el.onclick = function(e){ e.preventDefault(); goTo('inicio'); };
+    if (txt === 'Servicios' || lbl === 'servicios')
+      el.onclick = function(e){ e.preventDefault(); goTo('servicios'); };
+    if (txt.indexOf('citas') > -1 || lbl.indexOf('citas') > -1)
+      el.onclick = function(e){ e.preventDefault(); goTo('citas'); };
+    if (txt === 'Perfil' || lbl === 'perfil')
+      el.onclick = function(e){ e.preventDefault(); goTo('perfil'); };
+  });
+  // Botones de inicio
+  document.querySelectorAll('#screen-inicio button').forEach(function(el){
+    var txt = el.textContent.trim();
+    if (txt.indexOf('Agendar') > -1) el.onclick = function(){ goTo('agendar'); };
+    if (txt.indexOf('Ver servicios') > -1) el.onclick = function(){ goTo('servicios'); };
+  });
+}
+
+// ── BOOKING ────────────────────────────────────────────
+function navAgendar() { goTo("agendar"); }
+function initBooking() {
+  bookingData = {service:'', therapistId:'', therapistName:'', date:'', hour:null};
+  currentStep = 1;
+  renderStep(1);
+  connectNav();
+}
+
+function selectService(s) { bookingData.service = s; renderStep(1); }
+function selectTherapist(id, name) { bookingData.therapistId = id; bookingData.therapistName = name; renderStep(2); }
+function pickTherapist(idx) {
+  var t = therapists[idx];
+  if (t) selectTherapist(t.id, t.name);
+}
+function selectDate(d) { bookingData.date = d; renderStep(3); }
+function pickDate(el) { selectDate(el.getAttribute("data-ds")); }
+function selectHour(h) { bookingData.hour = h; renderStep(4); }
+
+function nextStep() {
+  if (currentStep === 1 && !bookingData.service) { showToast('Selecciona un servicio', true); return; }
+  if (currentStep === 2 && !bookingData.therapistId) { showToast('Selecciona un terapeuta', true); return; }
+  if (currentStep === 3 && !bookingData.date) { showToast('Selecciona una fecha', true); return; }
+  if (currentStep === 4 && bookingData.hour === null) { showToast('Selecciona una hora', true); return; }
+  renderStep(currentStep + 1);
+}
+
+function prevStep() {
+  if (currentStep > 1) renderStep(currentStep - 1);
+}
+
+async function renderStep(step) {
+  currentStep = step;
+  var c = document.querySelector('#screen-agendar main');
+  if (!c) return;
+
+  // Progress bar
+  var stepsHtml = '';
+  var stepNames = ['Servicio','Terapeuta','Fecha','Hora','Confirmar'];
+  for (var i = 0; i < 5; i++) {
+    var n = i + 1;
+    var done = n < step;
+    var active = n === step;
+    var circleClass = done || active
+      ? 'w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold shadow-md'
+      : 'w-8 h-8 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center text-sm font-bold';
+    var inner = done
+      ? '<span class="material-symbols-outlined text-sm" style="font-size:16px">check</span>'
+      : String(n);
+    var labelClass = active ? 'text-[10px] font-semibold text-primary' : 'text-[10px] text-on-surface-variant';
+    if (active) circleClass += ' ring-4 ring-primary/20';
+    stepsHtml += '<div class="flex flex-col items-center gap-1"><div class="' + circleClass + '">' + inner + '</div><span class="' + labelClass + '">' + stepNames[i] + '</span></div>';
+  }
+
+  var stepContent = '';
+
+  if (step === 1) {
+    var btns = '';
+    for (var i = 0; i < SERVICES.length; i++) {
+      var s = SERVICES[i];
+      var sel = bookingData.service === s;
+      var cls = sel
+        ? 'text-left p-4 rounded-2xl border-2 border-primary bg-primary/5 text-primary font-medium w-full'
+        : 'text-left p-4 rounded-2xl border-2 border-outline-variant/30 bg-surface-container-lowest text-on-surface font-medium w-full hover:border-primary/50 transition-colors';
+      btns += '<button onclick="selectService(SERVICES[' + i + '])" class="' + cls + '">' + s + '</button>';
+    }
+    stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">¿Qué servicio necesitas?</h2><div class="flex flex-col gap-3">' + btns + '</div>';
+
+  } else if (step === 2) {
+    var cards = '';
+    if (therapists.length === 0) {
+      cards = '<p class="text-on-surface-variant text-center py-8">No hay terapeutas disponibles.</p>';
+    } else {
+      for (var i = 0; i < therapists.length; i++) {
+        var t = therapists[i];
+        var sel = bookingData.therapistId === t.id;
+        var ini = t.initials || t.name.split(' ').map(function(n){ return n[0]; }).join('').slice(0,2).toUpperCase();
+        var cls = sel
+          ? 'flex items-center gap-4 p-4 rounded-2xl border-2 border-primary bg-primary/5 text-left w-full'
+          : 'flex items-center gap-4 p-4 rounded-2xl border-2 border-outline-variant/30 bg-surface-container-lowest text-left w-full hover:border-primary/50 transition-colors';
+        cards += '<button onclick="pickTherapist(' + i + ')" class="' + cls + '">'
+          + '<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary font-bold text-lg">' + ini + '</div>'
+          + '<div>'
+          + '<div class="font-semibold text-on-surface">' + t.name + '</div>'
+          + '<div class="text-sm text-on-surface-variant">' + (t.spec || 'Terapeuta') + '</div>'
+          + '<div class="text-xs text-primary mt-1">' + t.start_h + ':00 – ' + t.end_h + ':00</div>'
+          + '</div></button>';
+      }
+    }
+    stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">Elige tu terapeuta</h2><div class="flex flex-col gap-4">' + cards + '</div>';
+
+  } else if (step === 3) {
+    var today = new Date();
+    var dayBtns = '';
+    for (var i = 1; i <= 14; i++) {
+      var d = new Date(today);
+      d.setDate(today.getDate() + i);
+      if (d.getDay() === 0) continue; // sin domingos
+      var ds = d.toISOString().split('T')[0];
+      var dn = DAYS[d.getDay() === 0 ? 6 : d.getDay() - 1];
+      var mo = MONTHS[d.getMonth()].slice(0,3);
+      var sel = bookingData.date === ds;
+      var cls = sel
+        ? 'flex flex-col items-center p-3 rounded-2xl border-2 border-primary bg-primary text-white'
+        : 'flex flex-col items-center p-3 rounded-2xl border-2 border-outline-variant/30 bg-surface-container-lowest text-on-surface hover:border-primary/50 transition-colors';
+      dayBtns += '<button onclick="pickDate(this)" data-ds="' + ds + '" class="' + cls + '">';
+        + '<span class="text-xs font-medium opacity-75">' + dn + '</span>'
+        + '<span class="text-xl font-bold">' + d.getDate() + '</span>'
+        + '<span class="text-[10px] opacity-60">' + mo + '</span>'
+        + '</button>';
+    }
+    stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">Selecciona el día</h2><div class="grid grid-cols-4 gap-3">' + dayBtns + '</div>';
+
+  } else if (step === 4) {
+    // Cargar horas ocupadas desde Supabase
+    var th = null;
+    for (var i = 0; i < therapists.length; i++) {
+      if (therapists[i].id === bookingData.therapistId) { th = therapists[i]; break; }
+    }
+    var allHours = [];
+    if (th) { for (var h = th.start_h; h < th.end_h; h++) allHours.push(h); }
+
+    var occRes = await supa.from('appointments')
+      .select('hour')
+      .eq('therapist_id', bookingData.therapistId)
+      .eq('date', bookingData.date)
+      .neq('status', 'noas');
+    var occSet = {};
+    if (occRes.data) {
+      occRes.data.forEach(function(a){ occSet[a.hour] = true; });
+    }
+
+    var freeCount = allHours.filter(function(h){ return !occSet[h]; }).length;
+    var hourBtns = '';
+    for (var i = 0; i < allHours.length; i++) {
+      var h = allHours[i];
+      var taken = !!occSet[h];
+      var sel = bookingData.hour === h;
+      if (taken) {
+        hourBtns += '<div class="p-4 rounded-2xl border-2 border-outline-variant/15 bg-surface-container text-center opacity-40 cursor-not-allowed">'
+          + '<div class="font-semibold text-lg text-on-surface-variant line-through">' + h + ':00</div>'
+          + '<div class="text-xs mt-1 text-on-surface-variant">Ocupado</div></div>';
+      } else {
+        var cls = sel
+          ? 'p-4 rounded-2xl border-2 border-primary bg-primary text-white font-semibold text-lg text-center shadow-lg w-full'
+          : 'p-4 rounded-2xl border-2 border-outline-variant/30 bg-surface-container-lowest text-on-surface font-semibold text-lg text-center hover:border-primary/50 transition-colors w-full';
+        hourBtns += '<button onclick="selectHour(' + h + ')" class="' + cls + '">' + h + ':00</button>';
+      }
+    }
+    var thName = th ? th.name : 'el terapeuta';
+    var noSlots = freeCount === 0
+      ? '<div class="mt-6 p-4 bg-red-50 rounded-2xl text-center"><p class="text-sm text-red-600 font-medium">Sin horarios disponibles este día.</p><button onclick="prevStep()" class="mt-2 text-primary text-sm font-semibold underline">Elegir otro día</button></div>'
+      : '';
+    stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-2">¿A qué hora?</h2>'
+      + '<p class="text-on-surface-variant text-sm mb-5">' + freeCount + ' horario' + (freeCount !== 1 ? 's' : '') + ' libre' + (freeCount !== 1 ? 's' : '') + ' con ' + thName + '</p>'
+      + '<div class="grid grid-cols-3 gap-3">' + hourBtns + '</div>' + noSlots;
+
+  } else if (step === 5) {
+    var th = null;
+    for (var i = 0; i < therapists.length; i++) {
+      if (therapists[i].id === bookingData.therapistId) { th = therapists[i]; break; }
+    }
+    stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">Confirmar cita</h2>'
+      + '<div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/15 space-y-4 mb-6">'
+      + '<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Servicio</span><span class="font-semibold text-sm">' + bookingData.service + '</span></div>'
+      + '<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Terapeuta</span><span class="font-semibold text-sm">' + (th ? th.name : '—') + '</span></div>'
+      + '<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Fecha</span><span class="font-semibold text-sm">' + bookingData.date + '</span></div>'
+      + '<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Hora</span><span class="font-semibold text-sm">' + bookingData.hour + ':00</span></div>'
+      + '</div>'
+      + '<label class="text-xs text-on-surface-variant font-semibold uppercase tracking-wider block mb-2">Nota (opcional)</label>'
+      + '<textarea id="booking-note" rows="3" placeholder="Motivo de consulta..." class="w-full bg-surface-container-highest rounded-xl p-4 text-sm text-on-surface outline-none resize-none font-body border-none"></textarea>';
+  }
+
+  var backBtn = step > 1
+    ? '<button onclick="prevStep()" class="flex-1 py-4 rounded-full border-2 border-outline-variant/40 text-on-surface font-semibold text-base hover:bg-surface-container transition-colors">← Atrás</button>'
+    : '<div class="flex-1"></div>';
+  var fwdBtn = step < 5
+    ? '<button onclick="nextStep()" class="flex-1 py-4 rounded-full text-white font-semibold text-base shadow-lg" style="background:linear-gradient(135deg,#006684,#2ba8d4)">Siguiente →</button>'
+    : '<button onclick="confirmBooking()" class="flex-1 py-4 rounded-full text-white font-semibold text-base shadow-lg" style="background:linear-gradient(135deg,#006684,#2ba8d4)">✓ Confirmar cita</button>';
+
+  c.innerHTML = '<div class="mb-8 text-center px-2">'
+    + '<h1 class="font-headline font-bold text-3xl tracking-tight text-on-surface mb-1">Nueva Cita</h1>'
+    + '<p class="text-on-surface-variant text-sm">Diseña tu sesión de recuperación.</p></div>'
+    + '<div class="mb-10 px-2"><div class="flex justify-between items-start relative">'
+    + '<div class="absolute top-4 left-0 right-0 h-0.5 bg-surface-container-highest -z-10"></div>'
+    + '<div class="absolute top-4 left-0 h-0.5 bg-primary -z-10 transition-all duration-500" style="width:' + ((step-1)/4*100) + '%"></div>'
+    + stepsHtml + '</div></div>'
+    + '<div class="px-2">' + stepContent + '</div>'
+    + '<div class="flex gap-3 mt-8 px-2 pb-8">' + backBtn + fwdBtn + '</div>';
+
+  connectNav();
+}
+
+async function confirmBooking() {
+  if (!currentUser) { showToast('Debes iniciar sesión', true); return; }
+  var note = document.getElementById('booking-note');
+  note = note ? note.value : '';
+  var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).single();
+  var patId = patRes.data ? patRes.data.id : null;
+  var res = await supa.from('appointments').insert({
+    date: bookingData.date,
+    therapist_id: bookingData.therapistId,
+    patient_id: patId,
+    hour: bookingData.hour,
+    type: bookingData.service,
+    status: 'pend',
+    note: note
+  });
+  if (res.error) { showToast('Error al agendar. Intenta de nuevo.', true); return; }
+  showToast('¡Cita agendada correctamente!');
+  bookingData = {service:'', therapistId:'', date:'', hour:null};
+  setTimeout(function(){ goTo('citas'); }, 1500);
+}
+
+// ── MIS CITAS ──────────────────────────────────────────
+async function loadMyCitas() {
+  if (!currentUser) return;
+  var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).single();
+  var c = document.querySelector('#screen-citas main');
+  if (!c) return;
+
+  if (!patRes.data) {
+    c.innerHTML = '<div class="px-6 pt-8 text-center py-16">'
+      + '<p class="text-on-surface-variant">No tienes citas registradas.</p>'
+      + '<button onclick="navAgendar()" class="mt-4 px-8 py-3 rounded-full text-white font-semibold text-sm" style="background:#006684">Agendar primera cita</button></div>';
+    connectNav(); return;
+  }
+
+  var today = new Date().toISOString().split('T')[0];
+  var res = await supa.from('appointments').select('*,therapists(name,spec)')
+    .eq('patient_id', patRes.data.id).order('date', {ascending: true});
+  var all = res.data || [];
+  var upcoming = all.filter(function(a){ return a.date >= today; });
+  var past = all.filter(function(a){ return a.date < today; });
+
+  function apptCard(a) {
+    var statusMap = {conf:'CONFIRMADA', pend:'PENDIENTE', noas:'NO ASISTIÓ'};
+    var statusColor = {conf:'background:#dcfce7;color:#166534', pend:'background:#fef3c7;color:#92400e', noas:'background:#fee2e2;color:#991b1b'};
+    var lbl = statusMap[a.status] || 'PENDIENTE';
+    var sty = statusColor[a.status] || statusColor.pend;
+    return '<article class="bg-surface-container-lowest rounded-2xl p-5 mb-4 border border-outline-variant/10">'
+      + '<div class="flex justify-between items-start mb-3">'
+      + '<div><div class="font-headline font-bold text-lg text-on-surface">' + a.type + '</div>'
+      + '<div class="text-sm text-on-surface-variant">' + (a.therapists ? a.therapists.name : 'Terapeuta por asignar') + '</div></div>'
+      + '<span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;' + sty + '">' + lbl + '</span></div>'
+      + '<div class="flex gap-4 text-sm text-on-surface-variant">'
+      + '<div>' + a.date + '</div><div>' + a.hour + ':00</div></div></article>';
+  }
+
+  var html = '<div class="px-4 md:px-8 max-w-2xl mx-auto w-full pt-8 pb-24">'
+    + '<h2 class="font-headline text-4xl font-extrabold text-on-surface tracking-tight mb-2">Mis citas</h2>'
+    + '<p class="text-on-surface-variant mb-8">Gestiona tus sesiones de recuperación.</p>';
+
+  if (upcoming.length) {
+    html += '<h3 class="font-headline text-xl font-bold text-on-surface mb-4">Próximas citas</h3>';
+    upcoming.forEach(function(a){ html += apptCard(a); });
+  } else {
+    html += '<p class="text-on-surface-variant mb-6">No tienes citas próximas. <button onclick="navAgendar()" class="text-primary font-semibold underline">Agendar ahora</button></p>';
+  }
+  if (past.length) {
+    html += '<h3 class="font-headline text-xl font-bold text-on-surface mt-8 mb-4">Citas pasadas</h3>';
+    past.slice(0,5).forEach(function(a){ html += apptCard(a); });
+  }
+  html += '</div>';
+  c.innerHTML = html;
+  connectNav();
+}
+
+// ── PERFIL ─────────────────────────────────────────────
+async function loadProfile() {
+  if (!currentUser) return;
+  var res = await supa.from('patients').select('*').eq('email', currentUser.email).single();
+  var c = document.querySelector('#screen-perfil main');
+  if (!c) return;
+  var pat = res.data;
+  if (!pat) {
+    c.innerHTML = '<div class="pt-8 px-4 text-center text-on-surface-variant">No se encontró tu perfil.</div>';
+    connectNav(); return;
+  }
+  var statusLabel = pat.status === 'active' ? 'Activo' : pat.status === 'alta' ? 'Alta médica' : 'Inactivo';
+  var statusColor = pat.status === 'active' ? 'background:#dcfce7;color:#166534' : 'background:#dbeafe;color:#1e40af';
+  var initial = (pat.name || 'R').charAt(0).toUpperCase();
+  c.innerHTML = '<div class="pt-8 pb-32 px-4 md:px-8 max-w-2xl mx-auto space-y-5">'
+    + '<section class="bg-surface-container-lowest rounded-2xl p-6 text-center border border-outline-variant/10">'
+    + '<div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold text-primary" style="background:#e0f2fe">' + initial + '</div>'
+    + '<div class="font-headline font-bold text-2xl text-on-surface">' + pat.name + '</div>'
+    + '<div class="text-on-surface-variant text-sm mt-1">' + currentUser.email + '</div>'
+    + (pat.cedula ? '<div class="text-on-surface-variant text-sm">CI: ' + pat.cedula + '</div>' : '')
+    + (pat.tel ? '<div class="text-primary text-sm font-medium mt-1">' + pat.tel + '</div>' : '')
+    + '</section>'
+    + '<section class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10">'
+    + '<h3 class="font-headline font-bold text-lg text-on-surface mb-4">Mi tratamiento</h3>'
+    + '<div class="space-y-3">'
+    + '<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Diagnóstico</span><span class="font-medium text-sm text-right max-w-half">' + (pat.diag || 'Sin diagnóstico') + '</span></div>'
+    + '<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Sesiones</span><span class="font-medium text-sm">' + (pat.sessions || 0) + '</span></div>'
+    + '<div class="flex justify-between items-center"><span class="text-on-surface-variant text-sm">Estado</span><span style="font-size:11px;font-weight:600;padding:3px 12px;border-radius:99px;' + statusColor + '">' + statusLabel + '</span></div>'
+    + '</div></section>'
+    + '<button onclick="doLogout()" class="w-full py-4 rounded-full border-2 border-outline-variant/40 text-on-surface-variant font-semibold text-base flex items-center justify-center gap-2 hover:bg-surface-container transition-colors">'
+    + '<span class="material-symbols-outlined">logout</span>Cerrar sesión</button>'
+    + '</div>';
+  connectNav();
+}
+
+// ── INIT ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async function() {
+  await checkAuth();
+  connectNav();
+  document.querySelectorAll('#screen-inicio button').forEach(function(el){
+    var txt = el.textContent.trim();
+    if (txt.indexOf('Agendar') > -1) el.onclick = function(){ goTo('agendar'); };
+    if (txt.indexOf('Ver servicios') > -1) el.onclick = function(){ goTo('servicios'); };
+  });
+});
+
+
+</script>
+</body>
+</html>
