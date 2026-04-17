@@ -1176,14 +1176,18 @@ async function renderStep(step) {
     stepContent = '<h2 class="font-headline font-bold text-2xl text-on-surface mb-6">Elige tu terapeuta</h2><div class="flex flex-col gap-4">' + cards + '</div>';
 
   } else if (step === 3) {
-    var today = new Date();
+    // Usar fecha local para evitar problemas de timezone UTC-5 Ecuador
+    var now = new Date();
+    var todayY = now.getFullYear();
+    var todayM = now.getMonth();
+    var todayD = now.getDate();
     var dayBtns = '';
     for (var i = 1; i <= 14; i++) {
-      var d = new Date(today);
-      d.setDate(today.getDate() + i);
+      // Crear fecha sumando días sin pasar por UTC
+      var d = new Date(todayY, todayM, todayD + i);
       if (d.getDay() === 0) continue; // sin domingos
-      var ds = d.getFullYear() + '-' 
-        + String(d.getMonth()+1).padStart(2,'0') + '-' 
+      var ds = d.getFullYear() + '-'
+        + String(d.getMonth()+1).padStart(2,'0') + '-'
         + String(d.getDate()).padStart(2,'0');
       var dn = DAYS[d.getDay() === 0 ? 6 : d.getDay() - 1];
       var mo = MONTHS[d.getMonth()].slice(0,3);
