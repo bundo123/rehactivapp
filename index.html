@@ -1311,7 +1311,8 @@ async function loadMyCitas() {
   var c = document.querySelector('#screen-citas main');
   if (!c) return;
 
-  var today = new Date().toISOString().split('T')[0];
+  var _n = new Date();
+  var today = _n.getFullYear() + '-' + String(_n.getMonth()+1).padStart(2,'0') + '-' + String(_n.getDate()).padStart(2,'0');
   
   // Buscar paciente por email
   var patRes = await supa.from('patients').select('id').eq('email', currentUser.email).maybeSingle();
@@ -1326,7 +1327,7 @@ async function loadMyCitas() {
     // No tiene perfil vinculado — buscar citas sin patient_id agendadas en su sesión
     // Mostrar todas las citas recientes (últimos 30 días + futuras) sin filtro de paciente
     res = await supa.from('appointments').select('*,therapists(name,spec)')
-      .gte('date', new Date(Date.now()-30*24*60*60*1000).toISOString().split('T')[0])
+      .gte('date', (function(){ var d=new Date(Date.now()-30*24*60*60*1000); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); })())
       .order('date', {ascending: true});
   }
   var all = res.data || [];
