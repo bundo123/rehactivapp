@@ -687,28 +687,7 @@ body{min-height:100dvh;overscroll-behavior:none}
 </section>
 </main>
 <!-- BottomNavBar (Visible on Mobile) -->
-<nav class="md:hidden bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 rounded-t-[32px]">
-<!-- Inicio -->
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200 group" href="#">
-<span class="material-symbols-outlined text-2xl mb-1 group-hover:text-[#006684]" data-icon="home">home</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Inicio</span>
-</a>
-<!-- Servicios -->
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200 group" href="#">
-<span class="material-symbols-outlined text-2xl mb-1 group-hover:text-[#006684]" data-icon="grid_view">grid_view</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Servicios</span>
-</a>
-<!-- Mis citas (Active) -->
-<a class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all active:scale-90 duration-200" href="#">
-<span class="material-symbols-outlined text-2xl mb-1" data-icon="calendar_today" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Mis citas</span>
-</a>
-<!-- Perfil -->
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all active:scale-90 duration-200 group" href="#">
-<span class="material-symbols-outlined text-2xl mb-1 group-hover:text-[#006684]" data-icon="person">person</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Perfil</span>
-</a>
-</nav>
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(252,249,248,0.95);backdrop-filter:blur(16px);border-top:1px solid rgba(0,102,132,0.06);display:flex;justify-content:space-around;align-items:center;padding:8px 4px 20px;z-index:9990"><a onclick="event.preventDefault();goTo('inicio')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#9da9b0;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">home</span><span style="font-size:10px;font-weight:400;font-family:Plus Jakarta Sans,sans-serif">Inicio</span></a><a onclick="event.preventDefault();goTo('servicios')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#9da9b0;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">grid_view</span><span style="font-size:10px;font-weight:400;font-family:Plus Jakarta Sans,sans-serif">Servicios</span></a><a onclick="event.preventDefault();goTo('citas')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#006684;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">calendar_today</span><span style="font-size:10px;font-weight:600;font-family:Plus Jakarta Sans,sans-serif">Mis citas</span></a><a onclick="event.preventDefault();goTo('perfil')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#9da9b0;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">person</span><span style="font-size:10px;font-weight:400;font-family:Plus Jakarta Sans,sans-serif">Perfil</span></a></nav>
 
 </div>
 
@@ -818,28 +797,7 @@ body{min-height:100dvh;overscroll-behavior:none}
 </section>
 </main>
 <!-- BottomNavBar (Mobile Only) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fcf9f8]/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-[#006684]/5 shadow-[0_-4px_24px_rgba(0,0,0,0.04)] rounded-t-[32px]">
-<!-- Inicio -->
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:opacity-80 transition-opacity rounded-xl" href="#">
-<span class="material-symbols-outlined mb-1 text-[24px]">home</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Inicio</span>
-</a>
-<!-- Servicios -->
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:opacity-80 transition-opacity rounded-xl" href="#">
-<span class="material-symbols-outlined mb-1 text-[24px]">grid_view</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Servicios</span>
-</a>
-<!-- Mis citas -->
-<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 px-5 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 hover:opacity-80 transition-opacity rounded-xl" href="#">
-<span class="material-symbols-outlined mb-1 text-[24px]">calendar_today</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Mis citas</span>
-</a>
-<!-- Perfil (Active State) -->
-<a class="flex flex-col items-center justify-center bg-[#006684]/10 dark:bg-[#2BA8D4]/20 text-[#006684] dark:text-[#2BA8D4] rounded-[24px] px-5 py-2 transition-all scale-90 duration-200 pointer-events-none" href="#">
-<span class="material-symbols-outlined mb-1 text-[24px]" style="font-variation-settings: 'FILL' 1;">person</span>
-<span class="font-['Plus_Jakarta_Sans'] font-medium text-[11px]">Perfil</span>
-</a>
-</nav>
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(252,249,248,0.95);backdrop-filter:blur(16px);border-top:1px solid rgba(0,102,132,0.06);display:flex;justify-content:space-around;align-items:center;padding:8px 4px 20px;z-index:9990"><a onclick="event.preventDefault();goTo('inicio')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#9da9b0;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">home</span><span style="font-size:10px;font-weight:400;font-family:Plus Jakarta Sans,sans-serif">Inicio</span></a><a onclick="event.preventDefault();goTo('servicios')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#9da9b0;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">grid_view</span><span style="font-size:10px;font-weight:400;font-family:Plus Jakarta Sans,sans-serif">Servicios</span></a><a onclick="event.preventDefault();goTo('citas')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#9da9b0;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">calendar_today</span><span style="font-size:10px;font-weight:400;font-family:Plus Jakarta Sans,sans-serif">Mis citas</span></a><a onclick="event.preventDefault();goTo('perfil')" href="#" style="display:flex;flex-direction:column;align-items:center;padding:8px 16px;color:#006684;text-decoration:none;cursor:pointer"><span class="material-symbols-outlined" style="font-size:22px;margin-bottom:2px">person</span><span style="font-size:10px;font-weight:600;font-family:Plus Jakarta Sans,sans-serif">Perfil</span></a></nav>
 
 </div>
 
@@ -1097,7 +1055,11 @@ function goTo(screen) {
   });
   var el = document.getElementById('screen-' + screen);
   if (el) { el.classList.add('active'); window.scrollTo(0,0); }
-  if (screen === 'citas')   loadMyCitas();
+  if (screen === 'citas') {
+    var mc = document.querySelector('#screen-citas main');
+    if (mc) mc.innerHTML = '<div style="padding:40px;text-align:center"><div style="width:32px;height:32px;border-radius:50%;border:3px solid #006684;border-top-color:transparent;animation:spin 1s linear infinite;margin:0 auto"></div></div>';
+    loadMyCitas();
+  }
   updateBottomNav(screen);
   if (screen === 'agendar') initBooking();
   if (screen === 'perfil')  loadProfile();
@@ -1256,7 +1218,9 @@ async function renderStep(step) {
       var d = new Date(today);
       d.setDate(today.getDate() + i);
       if (d.getDay() === 0) continue; // sin domingos
-      var ds = d.toISOString().split('T')[0];
+      var ds = d.getFullYear() + '-' 
+        + String(d.getMonth()+1).padStart(2,'0') + '-' 
+        + String(d.getDate()).padStart(2,'0');
       var dn = DAYS[d.getDay() === 0 ? 6 : d.getDay() - 1];
       var mo = MONTHS[d.getMonth()].slice(0,3);
       var sel = bookingData.date === ds;
@@ -1431,7 +1395,10 @@ async function loadMyCitas() {
   }
   html += '</div>';
   c.innerHTML = html;
-  connectNav();
+  // Re-conectar nav buttons dinámicos
+  c.querySelectorAll('[onclick*="navAgendar"]').forEach(function(el){
+    el.onclick = navAgendar;
+  });
 }
 
 // ── PERFIL ─────────────────────────────────────────────
