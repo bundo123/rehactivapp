@@ -99,7 +99,7 @@ body{min-height:100dvh;overscroll-behavior:none}
 <header class="bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md docked full-width top-0 sticky z-50 no-border tonal-shift shadow-sm shadow-slate-200/50 dark:shadow-none hidden md:block">
 <div class="flex justify-between items-center w-full px-6 py-4">
 <div class="flex items-center gap-4">
-<button aria-label="Menu" class="text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity active:scale-95 duration-150 flex items-center justify-center h-10 w-10 rounded-full hover:bg-surface-container-low">
+<button aria-label="Menu" onclick="openDrawer()" class="text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity active:scale-95 duration-150 flex items-center justify-center h-10 w-10 rounded-full hover:bg-surface-container-low">
 <span class="material-symbols-outlined">menu</span>
 </button>
 <h1 class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">Rehactiva</h1>
@@ -111,7 +111,7 @@ body{min-height:100dvh;overscroll-behavior:none}
 <a class="font-['Manrope'] font-bold text-lg tracking-tight text-slate-500 dark:text-slate-400 hover:opacity-80 transition-opacity" href="#">Perfil</a>
 </nav>
 <button aria-label="Perfil" class="flex items-center gap-2 hover:opacity-80 transition-opacity active:scale-95 duration-150">
-<img alt="Foto de perfil del paciente" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container" data-alt="Close up portrait of a smiling young woman with natural makeup, looking at the camera, well lit, soft background blur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5jNMvrWMuQZVXo-LL5bC43M_3b7gnRmPaDQ_hS0nLcwSOixOc2B7r8-BQZBB2ffUFY-8sArUKRNUZcwRXBhre0WM_Tt0jChHLVgwM45QcuP4H7DDNiozGhQusrgiIm26K7TUk4pKrMnnv-bge4bLYRtvRrAUWfqRNER_sn2kDGoXj12H44eUMuVcmJ3XxEjuUAJowD_V7xU8S9-D1IA-OIuASsEpzKcoTA-3qB6BQCjp5jGUv-R1WumDWnQw07gDqLtSGzdKJyp8"/>
+<div onclick="goTo('perfil')" style="cursor:pointer;width:40px;height:40px;border-radius:50%;background:#006684;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;font-family:Manrope,sans-serif" id="nav-avatar">D</div>
 </button>
 </div>
 </header>
@@ -211,7 +211,7 @@ body{min-height:100dvh;overscroll-behavior:none}
 <span class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">Rehactiva</span>
 </div>
 <div>
-<img alt="Foto de perfil del paciente" class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Portrait of a user avatar with a solid blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSXOF3P8943Hd3JgVG39qBIFdvFf1FtEOBESXfpZdYl9oUp2_Y3dS-VaE5aRxgr-bRh9yukEZiQgOKyVy66rI9ZKtmrQQOZYZIxx-8jdDkQ3C4Q2gzgn3ez6kmYfFB-PupuIIDlsoIS9yOWDEJFLNWOC9G-eOBO6LEZOR5hHS9uXqYsVGVqv99xepN3UsvxDkhxvBj0-bKysvMKZr-MXQ6wCtRO4N04AcV3KhDy2Pl2Mqxr20j6X0mt-m1mNlbgSYoIz6qJCvxMfo"/>
+<div onclick="goTo('perfil')" style="cursor:pointer;width:40px;height:40px;border-radius:50%;background:#006684;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;font-family:Manrope,sans-serif" id="nav-avatar">D</div>
 </div>
 </header>
 <!-- Main Content -->
@@ -347,7 +347,7 @@ body{min-height:100dvh;overscroll-behavior:none}
             Rehactiva
         </div>
 <div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest cursor-pointer hover:opacity-80 transition-opacity active:scale-95 duration-150">
-<img alt="Foto de perfil del paciente" class="w-full h-full object-cover" data-alt="close up portrait of a young woman with a soft smile in natural lighting, neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsQ5lLZhqboXyiM1-rcSBZ9nX8PX4mtEtm3ECJBEmmfS7K5bEd49qI7p8LuQRPBiunqu1wCT344BBThrQ8MMKFug7OgzKuxnls48BQ6fOnEoR11DzJXq6uFv0Ar9s31GeoagzMD4A-OFR1SoYXUp4bkvUWBQFWi-ajvtthhg5Bc_xTUCicj0dV3VwsNmatcQggSuPKTw5oDPcf8GFloCh9vYtQNqWrXYIfUJLMktIbLbP769dbrGX7RNMvRvyVwcp_GBu7a0hk5U8"/>
+<div onclick="goTo('perfil')" style="cursor:pointer;width:40px;height:40px;border-radius:50%;background:#006684;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;font-family:Manrope,sans-serif" id="nav-avatar">D</div>
 </div>
 </header>
 <main class="max-w-2xl mx-auto px-4 sm:px-6 pt-6 pb-12">
@@ -505,12 +505,12 @@ body{min-height:100dvh;overscroll-behavior:none}
 <!-- TopAppBar -->
 <header class="bg-[#fcf9f8]/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm shadow-slate-200/50 dark:shadow-none docked full-width top-0 sticky z-50 transition-opacity">
 <div class="flex justify-between items-center w-full px-6 py-4">
-<button aria-label="Menu" class="text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity active:scale-95 duration-150">
-<span class="material-symbols-outlined text-2xl" data-icon="menu">menu</span>
+<button aria-label="Menu" onclick="openDrawer()" class="text-[#006684] dark:text-[#2BA8D4] hover:opacity-80 transition-opacity active:scale-95 duration-150">
+<span class="material-symbols-outlined text-2xl" onclick="openDrawer()" style="cursor:pointer">menu</span>
 </button>
 <h1 class="font-['Manrope'] font-extrabold text-[#006684] dark:text-[#2BA8D4] tracking-tighter text-2xl">Rehactiva</h1>
 <button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 w-10 h-10 rounded-full overflow-hidden bg-surface-variant flex items-center justify-center">
-<img alt="Foto de perfil del paciente" class="w-full h-full object-cover" data-alt="Portrait of a young smiling woman with natural lighting against a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHJirVGv8qt080V3hi2an3wawRJjKn_0PHVyLMWMUIlKnkTurtP3Qwd21yOZisFFikEr_p6LV8XWi4Qad1FtTX60wlWt1azfQkIWgIZLNbgPFWEcJVMwH_6SGvCw69QBp_DNGnmx2ouyz3hv4S9nj5R3OAKhqr1z5TtUF0J2LzLCUtJFBwSK16yZFa43kLeno79xUuMmcDurVfdZKCEKYzLYfloLkkzBRhaLVpNbnuim8GWGu8Clp1trdgu8W6h9cu-HqVEFvFVIE"/>
+<div onclick="goTo('perfil')" style="cursor:pointer;width:40px;height:40px;border-radius:50%;background:#006684;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;font-family:Manrope,sans-serif" id="nav-avatar">D</div>
 </button>
 </div>
 </header>
@@ -721,7 +721,7 @@ body{min-height:100dvh;overscroll-behavior:none}
 </button>
 <span class="font-['Manrope'] font-bold text-lg tracking-tight text-[#006684] dark:text-[#2BA8D4]">Rehactiva</span>
 <button class="hover:opacity-80 transition-opacity active:scale-95 duration-150 w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden flex-shrink-0">
-<img alt="Foto de perfil del paciente" class="w-full h-full object-cover" data-alt="close up portrait of a calm smiling young man in a well lit modern studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJJAlaZPw0BLfPSKLLBXbANtqW37qRH-QpB5IHwmctblKsW-RAzz9J5VL2yJluCQJTRxixP1pLx-VL6WB2B4rEtRQKS1gF2wBekli0VtKh--1ZyqJv0dQTNj8KPC_g4p4cr-k4nYnB4E4Uh0h5Z5O7ZMBeFoj8CklS4g01em8bE7TUUabGvk5PVQBdOcLw0U0PIE0dLkHtYt_e1z-ibbQZdcfN6gXJlGINuFAiS-mNnknjgDaHSiWw5ti8C6B16rer1ZJAszm5oh8"/>
+<div onclick="goTo('perfil')" style="cursor:pointer;width:40px;height:40px;border-radius:50%;background:#006684;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;font-family:Manrope,sans-serif" id="nav-avatar">D</div>
 </button>
 </header>
 <!-- Main Canvas -->
@@ -988,9 +988,9 @@ async function loadTherapists() {
 }
 
 function updateUserDisplay() {
-  // Actualizar avatares con inicial del usuario
+  if (!currentUser) return;
   var initials = currentUser.email.charAt(0).toUpperCase();
-  document.querySelectorAll('.user-avatar').forEach(function(el) {
+  document.querySelectorAll('#nav-avatar,#nav-avatar-agendar').forEach(function(el) {
     el.textContent = initials;
   });
 }
@@ -1003,6 +1003,7 @@ function goTo(screen) {
   var el = document.getElementById('screen-' + screen);
   if (el) { el.classList.add('active'); window.scrollTo(0,0); }
   if (screen === 'citas')   loadMyCitas();
+  updateBottomNav(screen);
   if (screen === 'agendar') initBooking();
   if (screen === 'perfil')  loadProfile();
   highlightNav(screen);
@@ -1037,34 +1038,60 @@ function connectNav() {
 }
 
 // ── BOOKING ────────────────────────────────────────────
+function openDrawer() {
+  var d = document.getElementById('app-drawer');
+  d.style.display = 'block';
+  // Actualizar info del usuario
+  if (currentUser) {
+    var ini = currentUser.email.charAt(0).toUpperCase();
+    var el = document.getElementById('drawer-initial');
+    var em = document.getElementById('drawer-email');
+    if (el) el.textContent = ini;
+    if (em) em.textContent = currentUser.email;
+  }
+}
+function closeDrawer() {
+  document.getElementById('app-drawer').style.display = 'none';
+}
+
 function navAgendar() { goTo("agendar"); }
 function initBooking() {
   bookingData = {service:'', therapistId:'', therapistName:'', date:'', hour:null};
   currentStep = 1;
+  // Limpiar el contenido estático de Stitch y reemplazar con nuestro booking
+  var m = document.querySelector('#screen-agendar main');
+  if (m) m.innerHTML = '';
   renderStep(1);
   connectNav();
 }
 
-function selectService(s) { bookingData.service = s; renderStep(1); }
-function selectTherapist(id, name) { bookingData.therapistId = id; bookingData.therapistName = name; renderStep(2); }
-function pickTherapist(idx) {
+async function selectService(s) { bookingData.service = s; await renderStep(1); }
+async function selectTherapist(id, name) { bookingData.therapistId = id; bookingData.therapistName = name; await renderStep(2); }
+async function pickTherapist(idx) {
   var t = therapists[idx];
-  if (t) selectTherapist(t.id, t.name);
+  if (t) await selectTherapist(t.id, t.name);
 }
-function selectDate(d) { bookingData.date = d; renderStep(3); }
-function pickDate(el) { selectDate(el.getAttribute("data-ds")); }
-function selectHour(h) { bookingData.hour = h; renderStep(4); }
+async function selectDate(d) { bookingData.date = d; await renderStep(3); }
+async function pickDate(el) { await selectDate(el.getAttribute("data-ds")); }
+async function selectHour(h) { bookingData.hour = h; await renderStep(4); }
 
-function nextStep() {
+function updateBottomNav(screen) {
+  var nav = document.getElementById('booking-bottom-nav');
+  if (!nav) return;
+  // Mostrar solo en pantalla agendar (las otras pantallas tienen su propio nav)
+  nav.style.display = screen === 'agendar' ? 'flex' : 'none';
+}
+
+async function nextStep() {
   if (currentStep === 1 && !bookingData.service) { showToast('Selecciona un servicio', true); return; }
   if (currentStep === 2 && !bookingData.therapistId) { showToast('Selecciona un terapeuta', true); return; }
   if (currentStep === 3 && !bookingData.date) { showToast('Selecciona una fecha', true); return; }
   if (currentStep === 4 && bookingData.hour === null) { showToast('Selecciona una hora', true); return; }
-  renderStep(currentStep + 1);
+  await renderStep(currentStep + 1);
 }
 
-function prevStep() {
-  if (currentStep > 1) renderStep(currentStep - 1);
+async function prevStep() {
+  if (currentStep > 1) await renderStep(currentStep - 1);
 }
 
 async function renderStep(step) {
@@ -1352,5 +1379,55 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 
 </script>
+
+<!-- Drawer menu -->
+<div id="app-drawer" onclick="closeDrawer()" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.3)">
+  <div onclick="event.stopPropagation()" style="position:absolute;left:0;top:0;bottom:0;width:260px;background:#fcf9f8;box-shadow:4px 0 24px rgba(0,0,0,0.1);padding:0;display:flex;flex-direction:column">
+    <div style="padding:24px 20px 16px;background:#006684">
+      <div id="drawer-initial" style="width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin-bottom:10px">R</div>
+      <div id="drawer-email" style="font-size:12px;color:rgba(255,255,255,0.8);font-family:Plus Jakarta Sans,sans-serif">Cargando...</div>
+    </div>
+    <nav style="flex:1;padding:12px 0">
+      <button onclick="closeDrawer();goTo('inicio')" style="width:100%;text-align:left;padding:14px 20px;background:none;border:none;cursor:pointer;font-size:14px;font-weight:500;color:#1c1b1b;font-family:Plus Jakarta Sans,sans-serif;display:flex;align-items:center;gap:12px">
+        <span class="material-symbols-outlined" style="color:#006684;font-size:20px">home</span>Inicio
+      </button>
+      <button onclick="closeDrawer();goTo('servicios')" style="width:100%;text-align:left;padding:14px 20px;background:none;border:none;cursor:pointer;font-size:14px;font-weight:500;color:#1c1b1b;font-family:Plus Jakarta Sans,sans-serif;display:flex;align-items:center;gap:12px">
+        <span class="material-symbols-outlined" style="color:#006684;font-size:20px">grid_view</span>Servicios
+      </button>
+      <button onclick="closeDrawer();goTo('agendar')" style="width:100%;text-align:left;padding:14px 20px;background:none;border:none;cursor:pointer;font-size:14px;font-weight:500;color:#1c1b1b;font-family:Plus Jakarta Sans,sans-serif;display:flex;align-items:center;gap:12px">
+        <span class="material-symbols-outlined" style="color:#006684;font-size:20px">calendar_month</span>Agendar cita
+      </button>
+      <button onclick="closeDrawer();goTo('citas')" style="width:100%;text-align:left;padding:14px 20px;background:none;border:none;cursor:pointer;font-size:14px;font-weight:500;color:#1c1b1b;font-family:Plus Jakarta Sans,sans-serif;display:flex;align-items:center;gap:12px">
+        <span class="material-symbols-outlined" style="color:#006684;font-size:20px">calendar_today</span>Mis citas
+      </button>
+      <button onclick="closeDrawer();goTo('perfil')" style="width:100%;text-align:left;padding:14px 20px;background:none;border:none;cursor:pointer;font-size:14px;font-weight:500;color:#1c1b1b;font-family:Plus Jakarta Sans,sans-serif;display:flex;align-items:center;gap:12px">
+        <span class="material-symbols-outlined" style="color:#006684;font-size:20px">person</span>Mi perfil
+      </button>
+    </nav>
+    <div style="padding:16px 20px;border-top:1px solid #f0eded">
+      <button onclick="doLogout()" style="width:100%;text-align:left;padding:10px 0;background:none;border:none;cursor:pointer;font-size:13px;color:#6e797f;font-family:Plus Jakarta Sans,sans-serif;display:flex;align-items:center;gap:10px">
+        <span class="material-symbols-outlined" style="font-size:18px">logout</span>Cerrar sesión
+      </button>
+    </div>
+  </div>
+</div>
+
+<nav style="position:fixed;bottom:0;left:0;right:0;background:rgba(252,249,248,0.95);backdrop-filter:blur(16px);border-top:1px solid rgba(0,102,132,0.06);display:flex;justify-content:space-around;align-items:center;padding:8px 4px 20px;z-index:50" id="booking-bottom-nav">
+  <button onclick="goTo('inicio')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9da9b0;font-family:Plus Jakarta Sans,sans-serif;font-size:10px;min-width:56px">
+    <span class="material-symbols-outlined" style="font-size:22px">home</span>Inicio
+  </button>
+  <button onclick="goTo('servicios')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9da9b0;font-family:Plus Jakarta Sans,sans-serif;font-size:10px;min-width:56px">
+    <span class="material-symbols-outlined" style="font-size:22px">grid_view</span>Servicios
+  </button>
+  <button onclick="goTo('agendar')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#006684;font-family:Plus Jakarta Sans,sans-serif;font-size:10px;font-weight:600;min-width:56px">
+    <span class="material-symbols-outlined" style="font-size:22px">calendar_month</span>Agendar
+  </button>
+  <button onclick="goTo('citas')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9da9b0;font-family:Plus Jakarta Sans,sans-serif;font-size:10px;min-width:56px">
+    <span class="material-symbols-outlined" style="font-size:22px">calendar_today</span>Mis citas
+  </button>
+  <button onclick="goTo('perfil')" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:#9da9b0;font-family:Plus Jakarta Sans,sans-serif;font-size:10px;min-width:56px">
+    <span class="material-symbols-outlined" style="font-size:22px">person</span>Perfil
+  </button>
+</nav>
 </body>
 </html>
